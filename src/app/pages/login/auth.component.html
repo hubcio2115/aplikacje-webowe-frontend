@@ -1,0 +1,82 @@
+<div class="flex min-h-screen justify-center pt-36">
+	<brn-tabs class="w-[600px]" value="login">
+		<brn-tabs-list
+			hlmTabsList
+			class="grid w-full grid-cols-2"
+			aria-label="tabs example"
+		>
+			<button hlmTabsTrigger brnTabsTrigger="login">Login</button>
+
+			<button hlmTabsTrigger brnTabsTrigger="register">Register</button>
+		</brn-tabs-list>
+
+		<div hlmTabsContent brnTabsContent="login">
+			<section hlmCard>
+				<div hlmCardHeader>
+					<h1 hlmCardTitle>Login</h1>
+
+					<p hlmCardDescription>Please insert login credentials to login.</p>
+				</div>
+
+				<p hlmCardContent>
+					<label class="my-4 block" hlmLabel>
+						Email
+						<input class="mt-1.5 w-full" type="email" hlmInput />
+					</label>
+
+					<label class="mb-4 mt-8 block" hlmLabel>
+						Password
+						<input class="mt-1.5 w-full" type="password" hlmInput />
+					</label>
+				</p>
+
+				<div hlmCardFooter>
+					<button hlmBtn>Login</button>
+				</div>
+			</section>
+		</div>
+
+		<div hlmTabsContent brnTabsContent="register">
+			<section hlmCard>
+				<div hlmCardHeader>
+					<h1 hlmCardTitle>Register</h1>
+
+					<p hlmCardDescription>
+						Please fill out the register form to create an account.
+					</p>
+				</div>
+
+				<p hlmCardContent class="grid grid-cols-2 grid-rows-3 gap-x-3.5">
+					<label class="my-4 block" hlmLabel>
+						First Name
+						<input class="mt-1.5 w-full" type="text" hlmInput />
+					</label>
+
+					<label class="my-4 block" hlmLabel>
+						Last Name
+						<input class="mt-1.5 w-full" type="text" hlmInput />
+					</label>
+
+					<label class="col-span-2 my-4 block" hlmLabel>
+						Email
+						<input class="mt-1.5 w-full" type="email" hlmInput />
+					</label>
+
+					<label class="my-4 block" hlmLabel>
+						Password
+						<input class="mt-1.5 w-full" type="password" hlmInput />
+					</label>
+
+					<label class="my-4 block" hlmLabel>
+						Confirm Password
+						<input class="mt-1.5 w-full" type="password" hlmInput />
+					</label>
+				</p>
+
+				<div hlmCardFooter>
+					<button hlmBtn>Register</button>
+				</div>
+			</section>
+		</div>
+	</brn-tabs>
+</div>
