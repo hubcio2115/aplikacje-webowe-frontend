@@ -1,17 +1,6 @@
-import { Component,  effect, inject, signal } from "@angular/core";
+import { Component, effect, inject, signal } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HlmBadgeDirective } from "@spartan-ng/ui-badge-helm";
-import { HlmButtonDirective } from "@spartan-ng/ui-button-helm";
-import {
-	HlmCardContentDirective,
-	HlmCardDescriptionDirective,
-	HlmCardDirective,
-	HlmCardFooterDirective,
-	HlmCardHeaderDirective,
-	HlmCardTitleDirective,
-} from "@spartan-ng/ui-card-helm";
-import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
-import { HlmLabelDirective } from "@spartan-ng/ui-label-helm";
 import {
 	BrnTabsComponent,
 	BrnTabsContentDirective,
@@ -24,6 +13,9 @@ import {
 	HlmTabsTriggerDirective,
 } from "@spartan-ng/ui-tabs-helm";
 import { z } from "zod";
+
+import { LoginFormComponent } from "~/app/components/login-form/login-form.component";
+import { RegisterFormComponent } from "~/app/components/register-form/register-form.component";
 
 const tabSchema = z.enum(["login", "register"]);
 type Tab = z.infer<typeof tabSchema>;
@@ -41,17 +33,10 @@ type Tab = z.infer<typeof tabSchema>;
 		HlmTabsTriggerDirective,
 		HlmTabsContentDirective,
 
-		HlmCardContentDirective,
-		HlmCardDescriptionDirective,
-		HlmCardDirective,
-		HlmCardFooterDirective,
-		HlmCardHeaderDirective,
-		HlmCardTitleDirective,
-
-		HlmLabelDirective,
-		HlmInputDirective,
-		HlmButtonDirective,
 		HlmBadgeDirective,
+
+		LoginFormComponent,
+		RegisterFormComponent,
 	],
 	templateUrl: "./auth.component.html",
 })

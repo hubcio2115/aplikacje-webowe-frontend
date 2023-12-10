@@ -1,0 +1,33 @@
+<div class="flex min-h-screen justify-center pt-36">
+	<brn-tabs class="w-[600px]" value="login">
+		<brn-tabs-list
+			hlmTabsList
+			class="grid w-full grid-cols-2"
+			aria-label="auth forms"
+		>
+			<button
+				(click)="changeTab('login')"
+				hlmTabsTrigger
+				brnTabsTrigger="login"
+			>
+				Login
+			</button>
+
+			<button
+				(click)="changeTab('register')"
+				hlmTabsTrigger
+				brnTabsTrigger="register"
+			>
+				Register
+			</button>
+		</brn-tabs-list>
+
+		<div hlmTabsContent brnTabsContent="login">
+			<app-login-form />
+		</div>
+
+		<div hlmTabsContent brnTabsContent="register">
+			<app-register-form />
+		</div>
+	</brn-tabs>
+</div>
