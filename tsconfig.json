@@ -12,6 +12,7 @@
 			"@spartan-ng/ui-badge-helm": ["./src/ui/ui-badge-helm/src/index.ts"],
 			"@spartan-ng/ui-button-helm": ["./src/ui/ui-button-helm/src/index.ts"],
 			"@spartan-ng/ui-card-helm": ["./src/ui/ui-card-helm/src/index.ts"],
+			"@spartan-ng/ui-icon-helm": ["./src/ui/ui-icon-helm/src/index.ts"],
 			"@spartan-ng/ui-input-helm": ["./src/ui/ui-input-helm/src/index.ts"],
 			"@spartan-ng/ui-label-helm": ["./src/ui/ui-label-helm/src/index.ts"],
 			"@spartan-ng/ui-tabs-helm": ["./src/ui/ui-tabs-helm/src/index.ts"]
