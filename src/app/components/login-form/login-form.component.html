@@ -1,0 +1,52 @@
+<form hlmCard [formGroup]="loginForm" (ngSubmit)="(onSubmit)">
+	<div hlmCardHeader>
+		<h1 hlmCardTitle>Login</h1>
+
+		<p hlmCardDescription>Please insert login credentials to login.</p>
+	</div>
+
+	<div hlmCardContent>
+		<label class="my-4 block" hlmLabel>
+			Email
+			<input
+				class="mt-1.5 w-full"
+				type="email"
+				hlmInput
+				formControlName="email"
+			/>
+		</label>
+
+		@if (loginForm.dirty && loginForm.controls.password.hasError("required")) {
+			<div>
+				<p class="text-red-500">Please provide your email.</p>
+			</div>
+		} @else if (loginForm.dirty && loginForm.controls.email.hasError("email")) {
+			<div>
+				<p class="text-red-500">Provided email is of wrong format.</p>
+			</div>
+		}
+
+		<label class="mb-4 mt-8 block" hlmLabel>
+			Password
+			<input
+				class="mt-1.5 w-full"
+				type="password"
+				formControlName="password"
+				hlmInput
+			/>
+		</label>
+
+		@if (loginForm.dirty && loginForm.controls.password.hasError("required")) {
+			<div>
+				<p class="text-red-500">Please provide your password.</p>
+			</div>
+		}
+	</div>
+
+	<div hlmCardFooter>
+		<button hlmBtn type="submit">
+			<hlm-icon name="radixSymbol" size="sm" class="mr-2 animate-spin" />
+			Login
+		</button>
+	</div>
+</form>
