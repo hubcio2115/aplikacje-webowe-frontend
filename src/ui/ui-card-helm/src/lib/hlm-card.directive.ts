@@ -1,10 +1,10 @@
-import { Directive, Input, computed, signal } from '@angular/core';
-import { hlm } from '@spartan-ng/ui-core';
-import { VariantProps, cva } from 'class-variance-authority';
-import { ClassValue } from 'clsx';
+import { Directive, Input, computed, signal } from "@angular/core";
+import { hlm } from "@spartan-ng/ui-core";
+import { VariantProps, cva } from "class-variance-authority";
+import { ClassValue } from "clsx";
 
 const cardVariants = cva(
-	'rounded-lg border border-border bg-card focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-card-foreground shadow-sm',
+	"rounded-lg border border-border bg-card focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-card-foreground shadow-sm",
 	{
 		variants: {},
 		defaultVariants: {},
@@ -13,14 +13,14 @@ const cardVariants = cva(
 export type CardVariants = VariantProps<typeof cardVariants>;
 
 @Directive({
-	selector: '[hlmCard]',
+	selector: "[hlmCard]",
 	standalone: true,
 	host: {
-		'[class]': '_computedClass()',
+		"[class]": "_computedClass()",
 	},
 })
 export class HlmCardDirective {
-	private readonly _userCls = signal<ClassValue>('');
+	private readonly _userCls = signal<ClassValue>("");
 	@Input()
 	set class(userCls: ClassValue) {
 		this._userCls.set(userCls);

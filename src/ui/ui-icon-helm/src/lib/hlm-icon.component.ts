@@ -1,26 +1,33 @@
-import { ChangeDetectionStrategy, Component, computed, Input, signal, ViewEncapsulation } from '@angular/core';
-import { IconName, NgIconComponent } from '@ng-icons/core';
-import { hlm } from '@spartan-ng/ui-core';
-import { cva } from 'class-variance-authority';
-import { ClassValue } from 'clsx';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	Input,
+	ViewEncapsulation,
+	computed,
+	signal,
+} from "@angular/core";
+import { IconName, NgIconComponent } from "@ng-icons/core";
+import { hlm } from "@spartan-ng/ui-core";
+import { cva } from "class-variance-authority";
+import { ClassValue } from "clsx";
 
-const DEFINED_SIZES = ['xs', 'sm', 'base', 'lg', 'xl', 'none'] as const;
+const DEFINED_SIZES = ["xs", "sm", "base", "lg", "xl", "none"] as const;
 
 type DefinedSizes = (typeof DEFINED_SIZES)[number];
 
-const iconVariants = cva('inline-flex', {
+const iconVariants = cva("inline-flex", {
 	variants: {
 		variant: {
-			xs: 'h-3 w-3',
-			sm: 'h-4 w-4',
-			base: 'h-6 w-6',
-			lg: 'h-8 w-8',
-			xl: 'h-12 w-12',
-			none: '',
+			xs: "h-3 w-3",
+			sm: "h-4 w-4",
+			base: "h-6 w-6",
+			lg: "h-8 w-8",
+			xl: "h-12 w-12",
+			none: "",
 		} satisfies Record<DefinedSizes, string>,
 	},
 	defaultVariants: {
-		variant: 'base',
+		variant: "base",
 	},
 });
 
@@ -31,7 +38,7 @@ const isDefinedSize = (size: IconSize): size is DefinedSizes => {
 };
 
 @Component({
-	selector: 'hlm-icon',
+	selector: "hlm-icon",
 	standalone: true,
 	imports: [NgIconComponent],
 	encapsulation: ViewEncapsulation.None,
@@ -46,21 +53,25 @@ const isDefinedSize = (size: IconSize): size is DefinedSizes => {
 		/>
 	`,
 	host: {
-		'[class]': '_computedClass()',
+		"[class]": "_computedClass()",
 	},
 })
 export class HlmIconComponent {
-	protected readonly _name = signal<IconName | string>('');
-	protected readonly _size = signal<IconSize>('base');
+	protected readonly _name = signal<IconName | string>("");
+	protected readonly _size = signal<IconSize>("base");
 	protected readonly _color = signal<string | undefined>(undefined);
-	protected readonly _strokeWidth = signal<string | number | undefined>(undefined);
-	protected readonly userCls = signal<ClassValue>('');
-	protected readonly ngIconSize = computed(() => (isDefinedSize(this._size()) ? '100%' : (this._size() as string)));
-	protected readonly ngIconCls = signal<ClassValue>('');
+	protected readonly _strokeWidth = signal<string | number | undefined>(
+		undefined,
+	);
+	protected readonly userCls = signal<ClassValue>("");
+	protected readonly ngIconSize = computed(() =>
+		isDefinedSize(this._size()) ? "100%" : (this._size() as string),
+	);
+	protected readonly ngIconCls = signal<ClassValue>("");
 
 	protected readonly _computedClass = computed(() => {
 		const size: IconSize = this._size();
-		const variant = isDefinedSize(size) ? size : 'none';
+		const variant = isDefinedSize(size) ? size : "none";
 		return hlm(iconVariants({ variant }), this.userCls());
 	});
 
