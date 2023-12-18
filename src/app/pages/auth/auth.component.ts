@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from "@angular/core";
+import { Component, OnInit, effect, inject, signal } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HlmBadgeDirective } from "@spartan-ng/ui-badge-helm";
 import {
@@ -21,7 +21,7 @@ const tabSchema = z.enum(["login", "register"]);
 type Tab = z.infer<typeof tabSchema>;
 
 @Component({
-	selector: "auth-component",
+	selector: "app-auth-component",
 	standalone: true,
 	imports: [
 		BrnTabsComponent,
@@ -40,14 +40,14 @@ type Tab = z.infer<typeof tabSchema>;
 	],
 	templateUrl: "./auth.component.html",
 })
-export class AuthComponent {
+export class AuthComponent implements OnInit {
 	#route = inject(ActivatedRoute);
 	#router = inject(Router);
 	tab = signal<Tab>("login");
 
 	constructor() {
 		effect(() => {
-			this.#router.navigate([], {
+			void this.#router.navigate([], {
 				relativeTo: this.#route,
 				queryParams: { tab: this.tab() },
 			});
