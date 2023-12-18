@@ -1,4 +1,4 @@
-<form hlmCard [formGroup]="loginForm" (ngSubmit)="(onSubmit)">
+<form hlmCard [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 	<div hlmCardHeader>
 		<h1 hlmCardTitle>Login</h1>
 
@@ -16,14 +16,15 @@
 			/>
 		</label>
 
-		@if (loginForm.dirty && loginForm.controls.password.hasError("required")) {
-			<div>
-				<p class="text-red-500">Please provide your email.</p>
-			</div>
-		} @else if (loginForm.dirty && loginForm.controls.email.hasError("email")) {
-			<div>
-				<p class="text-red-500">Provided email is of wrong format.</p>
-			</div>
+		@if (
+			loginForm.controls.email.dirty &&
+			loginForm.controls.password.hasError("required")
+		) {
+			<p class="text-red-500">Please provide your email.</p>
+		} @else if (
+			loginForm.controls.email && loginForm.controls.email.hasError("email")
+		) {
+			<p class="text-red-500">Provided email is of wrong format.</p>
 		}
 
 		<label class="mb-4 mt-8 block" hlmLabel>
@@ -36,17 +37,15 @@
 			/>
 		</label>
 
-		@if (loginForm.dirty && loginForm.controls.password.hasError("required")) {
-			<div>
-				<p class="text-red-500">Please provide your password.</p>
-			</div>
+		@if (
+			loginForm.controls.password.dirty &&
+			loginForm.controls.password.hasError("required")
+		) {
+			<p class="text-red-500">Please provide your password.</p>
 		}
 	</div>
 
 	<div hlmCardFooter>
-		<button hlmBtn type="submit">
-			<hlm-icon name="radixSymbol" size="sm" class="mr-2 animate-spin" />
-			Login
-		</button>
+		<button hlmBtn type="submit">Login</button>
 	</div>
 </form>
