@@ -12,12 +12,20 @@
 			"@spartan-ng/ui-badge-helm": ["./src/ui/ui-badge-helm/src/index.ts"],
 			"@spartan-ng/ui-button-helm": ["./src/ui/ui-button-helm/src/index.ts"],
 			"@spartan-ng/ui-card-helm": ["./src/ui/ui-card-helm/src/index.ts"],
-			"@spartan-ng/ui-icon-helm": ["./src/ui/ui-icon-helm/src/index.ts"],
 			"@spartan-ng/ui-input-helm": ["./src/ui/ui-input-helm/src/index.ts"],
 			"@spartan-ng/ui-label-helm": ["./src/ui/ui-label-helm/src/index.ts"],
-			"@spartan-ng/ui-tabs-helm": ["./src/ui/ui-tabs-helm/src/index.ts"]
+			"@spartan-ng/ui-tabs-helm": ["./src/ui/ui-tabs-helm/src/index.ts"],
+			"@spartan-ng/ui-table-helm": ["./src/ui/ui-table-helm/src/index.ts"],
+			"@spartan-ng/ui-menu-helm": ["./src/ui/ui-menu-helm/src/index.ts"],
+			"@spartan-ng/ui-typography-helm": [
+				"./src/ui/ui-typography-helm/src/index.ts"
+			],
+			"@spartan-ng/ui-checkbox-helm": [
+				"./src/ui/ui-checkbox-helm/src/index.ts"
+			],
+			"@spartan-ng/ui-icon-helm": ["./src/ui/ui-icon-helm/src/index.ts"]
 		}
 	},
-	"files": ["src/main.ts", "src/main.server.ts", "server.ts"],
+	"files": ["src/main.ts"],
 	"include": ["src/**/*.d.ts", "src/app/**/*.ts"]
 }

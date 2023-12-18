@@ -1,5 +1,4 @@
 import { ApplicationConfig } from "@angular/core";
-import { provideClientHydration } from "@angular/platform-browser";
 import { provideRouter } from "@angular/router";
 import {
 	QueryClient,
@@ -9,9 +8,5 @@ import {
 import { routes } from "./app.routes";
 
 export const appConfig: ApplicationConfig = {
-	providers: [
-		provideRouter(routes),
-		provideClientHydration(),
-		provideAngularQuery(new QueryClient()),
-	],
+	providers: [provideRouter(routes), provideAngularQuery(new QueryClient())],
 };
