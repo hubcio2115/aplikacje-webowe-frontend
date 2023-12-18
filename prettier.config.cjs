@@ -11,6 +11,15 @@ module.exports = {
 	tabWidth: 2,
 	useTabs: true,
 
+	overrides: [
+		{
+			files: "*.html",
+			options: {
+				parser: "angular",
+			},
+		},
+	],
+
 	importOrder: ["^(~/)", "^[./]"],
 	importOrderSeparation: true,
 	importOrderSortSpecifiers: true,
