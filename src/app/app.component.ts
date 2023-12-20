@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component } from "@angular/core";
+import { Component, HostBinding } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { AngularQueryDevtools } from "@tanstack/angular-query-devtools-experimental";
 
@@ -7,6 +7,11 @@ import { AngularQueryDevtools } from "@tanstack/angular-query-devtools-experimen
 	selector: "app-root",
 	standalone: true,
 	imports: [CommonModule, RouterOutlet, AngularQueryDevtools],
-	templateUrl: "./app.component.html",
+	template: `
+		<router-outlet />
+		<angular-query-devtools />
+	`,
 })
-export class AppComponent {}
+export class AppComponent {
+	@HostBinding("class") class = "min-h-screen flex";
+}
