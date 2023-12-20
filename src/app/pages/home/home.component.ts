@@ -1,17 +1,21 @@
-import { SelectionModel } from "@angular/cdk/collections";
-import { DecimalPipe, TitleCasePipe } from "@angular/common";
+import { DatePipe, DecimalPipe, TitleCasePipe } from "@angular/common";
+import { HttpClient } from "@angular/common/http";
 import {
 	Component,
+	HostBinding,
+	OnInit,
 	TrackByFunction,
 	computed,
-	effect,
+	inject,
 	signal,
 } from "@angular/core";
 import { toObservable, toSignal } from "@angular/core/rxjs-interop";
 import { FormsModule } from "@angular/forms";
 import {
 	radixCaretSort,
+	radixCheck,
 	radixChevronDown,
+	radixCross2,
 	radixDotsHorizontal,
 } from "@ng-icons/radix-icons";
 import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
@@ -30,137 +34,12 @@ import {
 	useBrnColumnManager,
 } from "@spartan-ng/ui-table-brain";
 import { HlmTableModule } from "@spartan-ng/ui-table-helm";
-import { debounceTime, map } from "rxjs";
+import { debounceTime } from "rxjs";
 
-export type Payment = {
-	id: string;
-	amount: number;
-	status: "pending" | "processing" | "success" | "failed";
-	email: string;
-};
-
-const PAYMENT_DATA: Payment[] = [
-	{
-		id: "m5gr84i9",
-		amount: 316,
-		status: "success",
-		email: "ken99@yahoo.com",
-	},
-	{
-		id: "3u1reuv4",
-		amount: 242,
-		status: "success",
-		email: "Abe45@gmail.com",
-	},
-	{
-		id: "derv1ws0",
-		amount: 837,
-		status: "processing",
-		email: "Monserrat44@gmail.com",
-	},
-	{
-		id: "5kma53ae",
-		amount: 874,
-		status: "success",
-		email: "Silas22@gmail.com",
-	},
-	{
-		id: "bhqecj4p",
-		amount: 721,
-		status: "failed",
-		email: "carmella@hotmail.com",
-	},
-	{
-		id: "p0r8sd2f",
-		amount: 123,
-		status: "failed",
-		email: "john.doe@example.com",
-	},
-	{
-		id: "8uyv3n1x",
-		amount: 589,
-		status: "processing",
-		email: "emma.smith@gmail.com",
-	},
-	{
-		id: "2zqo6ptr",
-		amount: 456,
-		status: "success",
-		email: "jackson78@hotmail.com",
-	},
-	{
-		id: "l7we9a3m",
-		amount: 632,
-		status: "success",
-		email: "grace_22@yahoo.com",
-	},
-	{
-		id: "o9p2v3qk",
-		amount: 987,
-		status: "failed",
-		email: "robert.adams@gmail.com",
-	},
-	{
-		id: "q1o8r7mz",
-		amount: 321,
-		status: "processing",
-		email: "alexander34@gmail.com",
-	},
-	{
-		id: "i5n3s0tv",
-		amount: 555,
-		status: "failed",
-		email: "olivia_morris@hotmail.com",
-	},
-	{
-		id: "3xr7s2nl",
-		amount: 789,
-		status: "success",
-		email: "michael_cole@yahoo.com",
-	},
-	{
-		id: "u9v2p1qy",
-		amount: 234,
-		status: "success",
-		email: "lily.jones@gmail.com",
-	},
-	{
-		id: "b4q0e1cp",
-		amount: 876,
-		status: "failed",
-		email: "ryan_14@hotmail.com",
-	},
-	{
-		id: "s1z8m7op",
-		amount: 456,
-		status: "success",
-		email: "sophia.green@gmail.com",
-	},
-	{
-		id: "n5a3v0lt",
-		amount: 987,
-		status: "failed",
-		email: "david.miller@yahoo.com",
-	},
-	{
-		id: "2qr7v9sm",
-		amount: 654,
-		status: "processing",
-		email: "emma_jones@hotmail.com",
-	},
-	{
-		id: "y9b2h8qq",
-		amount: 789,
-		status: "success",
-		email: "jacob_89@gmail.com",
-	},
-	{
-		id: "c4a0r1xp",
-		amount: 123,
-		status: "failed",
-		email: "samantha.richards@yahoo.com",
-	},
-];
+import { SnakeCaseToSeparateCapitalizedPipe } from "~/app/shared/pipes/snakeCaseToSeparateCapitalized";
+import { Country } from "~/app/shared/types/Country.interface";
+import { environment } from "~/environments/environment";
+import { HlmLabelDirective } from "~/ui/ui-label-helm/src";
 
 @Component({
 	selector: "app-home",
@@ -177,134 +56,176 @@ const PAYMENT_DATA: Payment[] = [
 		HlmButtonModule,
 
 		DecimalPipe,
+		DatePipe,
 		TitleCasePipe,
+
 		HlmIconComponent,
+
+		HlmLabelDirective,
 		HlmInputDirective,
+
+		SnakeCaseToSeparateCapitalizedPipe,
 
 		BrnCheckboxComponent,
 		HlmCheckboxCheckIconComponent,
 		HlmCheckboxDirective,
 	],
 	providers: [
-		provideIcons({ radixChevronDown, radixDotsHorizontal, radixCaretSort }),
+		provideIcons({
+			radixChevronDown,
+			radixDotsHorizontal,
+			radixCaretSort,
+			radixCheck,
+			radixCross2,
+		}),
 	],
-	host: {
-		class: "w-full",
-	},
 	templateUrl: "./home.component.html",
 })
-export class DataTablePreviewComponent {
-	protected readonly _rawFilterInput = signal("");
-	protected readonly _emailFilter = signal("");
-	private readonly _debouncedFilter = toSignal(
+export class HomeComponent implements OnInit {
+	@HostBinding("class") class = "flex flex-1 justify-center items-center";
+
+	readonly #httpClient = inject(HttpClient);
+
+	readonly _rawFilterInput = signal("");
+	readonly #debouncedFilter = toSignal(
 		toObservable(this._rawFilterInput).pipe(debounceTime(300)),
 	);
+	readonly _nameFilter = computed(() => this.#debouncedFilter() ?? "");
 
-	private readonly _displayedIndices = signal({ start: 0, end: 0 });
-	protected readonly _availablePageSizes = [5, 10, 20, 10000];
-	protected readonly _pageSize = signal(this._availablePageSizes[0]);
+	readonly _inEuropeCheckbox = signal(false);
 
-	private readonly _selectionModel = new SelectionModel<Payment>(true);
-	protected readonly _isPaymentSelected = (payment: Payment) =>
-		this._selectionModel.isSelected(payment);
-	protected readonly _selected = toSignal(
-		this._selectionModel.changed.pipe(map((change) => change.source.selected)),
-		{
-			initialValue: [],
-		},
-	);
+	readonly #displayedIndices = signal({ start: 0, end: 0 });
+	readonly _availablePageSizes = [5, 10, 20, 10_000];
+	readonly _pageSize = signal(this._availablePageSizes[0]);
 
-	protected readonly _brnColumnManager = useBrnColumnManager({
-		status: true,
-		email: true,
-		amount: true,
+	readonly _brnColumnManager = useBrnColumnManager({
+		name: true,
+		gdp: true,
+		is_in_europe: true,
+		formation_year: true,
 	});
-	protected readonly _allDisplayedColumns = computed(() => [
-		"select",
+	readonly _allDisplayedColumns = computed(() => [
 		...this._brnColumnManager.displayedColumns(),
 		"actions",
 	]);
 
-	private readonly _payments = signal(PAYMENT_DATA);
-	private readonly _filteredPayments = computed(() => {
-		const emailFilter = this._emailFilter()?.trim()?.toLowerCase();
-		if (emailFilter && emailFilter.length > 0) {
-			return this._payments().filter((u) =>
-				u.email.toLowerCase().includes(emailFilter),
+	readonly #countries = signal<Country[]>([]);
+	readonly #filteredCountries = computed(() => {
+		const nameFilter = this._nameFilter().trim().toLowerCase();
+		const inEuropeCheckbox = this._inEuropeCheckbox();
+
+		const filteredByName =
+			nameFilter.length > 0
+				? this.#countries().filter((country) =>
+						country.name.toLowerCase().includes(nameFilter),
+				  )
+				: this.#countries();
+
+		if (inEuropeCheckbox)
+			return filteredByName.filter((country) => country.isInEurope);
+
+		return filteredByName;
+	});
+
+	ngOnInit(): void {
+		this.#httpClient
+			.get<Country[]>(`${environment.apiUrl}/api/countries`)
+			.subscribe((value) => {
+				this.#countries.set(value);
+			});
+	}
+
+	readonly #nameSort = signal<"ASC" | "DESC" | null>("ASC");
+	readonly #gdpSort = signal<"ASC" | "DESC" | null>(null);
+	readonly #formationYearSort = signal<"ASC" | "DESC" | null>(null);
+	readonly _filteredSortedPaginatedCountries = computed(() => {
+		const nameSort = this.#nameSort();
+		const gdpSort = this.#gdpSort();
+		const formationYearSort = this.#formationYearSort();
+
+		const start = this.#displayedIndices().start;
+		const end = this.#displayedIndices().end + 1;
+		const countries = this.#filteredCountries();
+
+		let result: Country[];
+		if (this.#nameSort()) {
+			result = [...countries].sort(
+				(c1, c2) =>
+					(nameSort === "ASC" ? 1 : -1) * c1.name.localeCompare(c2.name),
 			);
-		}
-		return this._payments();
-	});
-	private readonly _emailSort = signal<"ASC" | "DESC" | null>(null);
-	protected readonly _filteredSortedPaginatedPayments = computed(() => {
-		const sort = this._emailSort();
-		const start = this._displayedIndices().start;
-		const end = this._displayedIndices().end + 1;
-		const payments = this._filteredPayments();
-		if (!sort) {
-			return payments.slice(start, end);
-		}
-		return [...payments]
-			.sort(
-				(p1, p2) =>
-					(sort === "ASC" ? 1 : -1) * p1.email.localeCompare(p2.email),
-			)
-			.slice(start, end);
-	});
-	protected readonly _allFilteredPaginatedPaymentsSelected = computed(() =>
-		this._filteredSortedPaginatedPayments().every((payment) =>
-			this._selected().includes(payment),
-		),
-	);
-	protected readonly _checkboxState = computed(() => {
-		const noneSelected = this._selected().length === 0;
-		const allSelectedOrIndeterminate =
-			this._allFilteredPaginatedPaymentsSelected() ? true : "indeterminate";
-		return noneSelected ? false : allSelectedOrIndeterminate;
+		} else if (this.#gdpSort()) {
+			result = [...countries].sort(
+				(c1, c2) => (gdpSort === "ASC" ? 1 : -1) * (c1.gdp - c2.gdp),
+			);
+		} else if (this.#formationYearSort()) {
+			result = [...countries].sort(
+				(c1, c2) =>
+					(formationYearSort === "ASC" ? 1 : -1) *
+					(parseInt(c1.formationYear) - parseInt(c2.formationYear)),
+			);
+		} else result = countries;
+
+		return result.slice(start, end);
 	});
 
-	protected readonly _trackBy: TrackByFunction<Payment> = (
-		_: number,
-		p: Payment,
-	) => p.id;
-	protected readonly _totalElements = computed(
-		() => this._filteredPayments().length,
-	);
-	protected readonly _onStateChange = ({
-		startIndex,
-		endIndex,
-	}: PaginatorState) =>
-		this._displayedIndices.set({ start: startIndex, end: endIndex });
+	readonly _trackBy: TrackByFunction<Country> = (_: number, c: Country) => c.id;
+	readonly _totalElements = computed(() => this.#filteredCountries().length);
+	readonly _onStateChange = ({ startIndex, endIndex }: PaginatorState) => {
+		this.#displayedIndices.set({ start: startIndex, end: endIndex });
+	};
 
-	constructor() {
-		// needed to sync the debounced filter to the name filter, but being able to override the
-		// filter when loading new users without debounce
-		effect(() => this._emailFilter.set(this._debouncedFilter() ?? ""), {
-			allowSignalWrites: true,
-		});
-	}
-
-	protected togglePayment(payment: Payment) {
-		this._selectionModel.toggle(payment);
-	}
-
-	protected handleHeaderCheckboxChange() {
-		const previousCbState = this._checkboxState();
-		if (previousCbState === "indeterminate" || !previousCbState) {
-			this._selectionModel.select(...this._filteredSortedPaginatedPayments());
-		} else {
-			this._selectionModel.deselect(...this._filteredSortedPaginatedPayments());
+	handleFormationYearSortChange() {
+		switch (this.#formationYearSort()) {
+			case "ASC":
+				this.#formationYearSort.set("DESC");
+				break;
+			case "DESC":
+				this.#formationYearSort.set(null);
+				break;
+			default:
+				this.#formationYearSort.set("ASC");
+				break;
 		}
+
+		if (this.#gdpSort() !== null) this.#gdpSort.set(null);
+		if (this.#nameSort() !== null) this.#nameSort.set(null);
 	}
 
-	protected handleEmailSortChange() {
-		const sort = this._emailSort();
-		if (sort === "ASC") {
-			this._emailSort.set("DESC");
-		} else if (sort === "DESC") {
-			this._emailSort.set(null);
-		} else {
-			this._emailSort.set("ASC");
+	handleGdpSortChange() {
+		switch (this.#gdpSort()) {
+			case "ASC":
+				this.#gdpSort.set("DESC");
+				break;
+			case "DESC":
+				this.#gdpSort.set(null);
+				break;
+			default:
+				this.#gdpSort.set("ASC");
+				break;
 		}
+
+		if (this.#formationYearSort() !== null) this.#formationYearSort.set(null);
+		if (this.#nameSort() !== null) this.#nameSort.set(null);
+	}
+
+	handleToggleInEuropeCheckbox() {
+		this._inEuropeCheckbox.set(!this._inEuropeCheckbox());
+	}
+
+	handleNameSortChange() {
+		switch (this.#nameSort()) {
+			case "ASC":
+				this.#nameSort.set("DESC");
+				break;
+			case "DESC":
+				this.#nameSort.set(null);
+				break;
+			default:
+				this.#nameSort.set("ASC");
+				break;
+		}
+
+		if (this.#formationYearSort() !== null) this.#formationYearSort.set(null);
+		if (this.#gdpSort() !== null) this.#gdpSort.set(null);
 	}
 }
