@@ -1,4 +1,11 @@
-import { Component, OnInit, effect, inject, signal } from "@angular/core";
+import {
+	Component,
+	HostBinding,
+	OnInit,
+	effect,
+	inject,
+	signal,
+} from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HlmBadgeDirective } from "@spartan-ng/ui-badge-helm";
 import {
@@ -41,6 +48,8 @@ type Tab = z.infer<typeof tabSchema>;
 	templateUrl: "./auth.component.html",
 })
 export class AuthComponent implements OnInit {
+	@HostBinding("class") class = "flex justify-center pt-36 w-full";
+
 	#route = inject(ActivatedRoute);
 	#router = inject(Router);
 	tab = signal<Tab>("login");
