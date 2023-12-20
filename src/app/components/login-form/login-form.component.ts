@@ -48,7 +48,7 @@ export class LoginFormComponent {
 		password: new FormControl("", {
 			nonNullable: true,
 			updateOn: "submit",
-			validators: [Validators.required],
+			validators: [Validators.minLength(8)],
 		}),
 	});
 
