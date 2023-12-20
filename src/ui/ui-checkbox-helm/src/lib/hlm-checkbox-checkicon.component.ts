@@ -17,8 +17,9 @@ import { ClassValue } from "clsx";
 })
 export class HlmCheckboxCheckIconComponent {
 	private _brnCheckbox = inject(BrnCheckboxComponent);
-	protected _checked = this._brnCheckbox?.isChecked;
+	protected _checked = this._brnCheckbox.isChecked;
 	private readonly _userCls = signal<ClassValue>("");
+
 	@Input()
 	set class(userCls: ClassValue) {
 		this._userCls.set(userCls);

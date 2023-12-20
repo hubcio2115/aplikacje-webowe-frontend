@@ -1,22 +1,22 @@
-import { NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from "@angular/common";
 import {
-	booleanAttribute,
 	ChangeDetectionStrategy,
 	Component,
-	computed,
 	Input,
-	signal,
 	ViewEncapsulation,
-} from '@angular/core';
-import { hlm } from '@spartan-ng/ui-core';
-import { ClassValue } from 'clsx';
+	booleanAttribute,
+	computed,
+	signal,
+} from "@angular/core";
+import { hlm } from "@spartan-ng/ui-core";
+import { ClassValue } from "clsx";
 
 @Component({
-	selector: 'hlm-td',
+	selector: "hlm-td",
 	standalone: true,
 	imports: [NgTemplateOutlet],
 	host: {
-		'[class]': '_computedClass()',
+		"[class]": "_computedClass()",
 	},
 	template: `
 		<ng-template #content>
@@ -37,9 +37,12 @@ export class HlmTdComponent {
 	@Input({ transform: booleanAttribute })
 	public truncate = false;
 
-	private readonly _userCls = signal<ClassValue>('');
+	private readonly _userCls = signal<ClassValue>("");
 	protected readonly _computedClass = computed(() =>
-		hlm('flex flex-none p-4 items-center [&:has([role=checkbox])]:pr-0', this._userCls()),
+		hlm(
+			"flex flex-none p-4 items-center [&:has([role=checkbox])]:pr-0",
+			this._userCls(),
+		),
 	);
 
 	@Input()
