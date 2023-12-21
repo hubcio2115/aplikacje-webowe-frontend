@@ -1,0 +1,220 @@
+<div class="min-w-[800px]">
+	<div class="flex flex-col justify-between gap-4 sm:flex-row">
+		<input
+			hlmInput
+			class="w-full md:w-80"
+			placeholder="Filter names..."
+			[ngModel]="_nameFilter()"
+			(ngModelChange)="_rawFilterInput.set($event)"
+		/>
+
+		<label class="flex items-center" hlmLabel>
+			<brn-checkbox
+				class="mr-2"
+				[ngModel]="_inEuropeCheckbox()"
+				(ngModelChange)="handleToggleInEuropeCheckbox()"
+				hlm
+			>
+				<hlm-checkbox-checkicon />
+			</brn-checkbox>
+
+			Show only in Europe
+		</label>
+
+		<button hlmBtn variant="outline" align="end" [brnMenuTriggerFor]="menu">
+			Columns
+			<hlm-icon name="radixChevronDown" class="ml-2" size="sm" />
+		</button>
+
+		<ng-template #menu>
+			<hlm-menu class="w-44">
+				@for (columnName of _brnColumnManager.allColumns; track columnName) {
+					<button
+						hlmMenuItemCheckbox
+						[disabled]="_brnColumnManager.isColumnDisabled(columnName)"
+						[checked]="_brnColumnManager.isColumnVisible(columnName)"
+						(triggered)="_brnColumnManager.toggleVisibility(columnName)"
+					>
+						<hlm-menu-item-check />
+						<span>{{ columnName | snakeCaseToSeparateCapitalized }}</span>
+					</button>
+				}
+			</hlm-menu>
+		</ng-template>
+	</div>
+
+	<brn-table
+		hlm
+		stickyHeader
+		class="mt-4 block h-[335px] overflow-auto rounded-md border border-border"
+		[dataSource]="_filteredSortedPaginatedCountries()"
+		[displayedColumns]="_allDisplayedColumns()"
+		[trackBy]="_trackBy"
+	>
+		<brn-column-def name="name">
+			<hlm-th class="w-44" *brnHeaderDef>
+				<button
+					hlmBtn
+					size="sm"
+					variant="ghost"
+					(click)="handleNameSortChange()"
+				>
+					Name
+					<hlm-icon class="ml-3" size="sm" name="radixCaretSort" />
+				</button>
+			</hlm-th>
+
+			<hlm-td truncate class="w-44" *brnCellDef="let element">
+				{{ element.name }}
+			</hlm-td>
+		</brn-column-def>
+
+		<brn-column-def name="gdp">
+			<hlm-th class="lg:flex-1" *brnHeaderDef>
+				<button
+					hlmBtn
+					size="sm"
+					variant="ghost"
+					(click)="handleGdpSortChange()"
+				>
+					GDP
+					<hlm-icon class="ml-3" size="sm" name="radixCaretSort" />
+				</button>
+			</hlm-th>
+
+			<hlm-td
+				class="font-medium tabular-nums lg:flex-1"
+				*brnCellDef="let element"
+			>
+				$ {{ element.gdp | number: "1.2-2" }}
+			</hlm-td>
+		</brn-column-def>
+
+		<brn-column-def name="is_in_europe">
+			<hlm-th class="w-32 justify-center" *brnHeaderDef>Is in Europe</hlm-th>
+
+			<hlm-td
+				class="w-32 justify-center font-medium tabular-nums"
+				*brnCellDef="let element"
+			>
+				@if (element.isInEurope) {
+					<hlm-icon name="radixCheck" class="ml-2 text-green-900" size="sm" />
+				} @else {
+					<hlm-icon name="radixCross2" class="ml-2 text-red-900" size="sm" />
+				}
+			</hlm-td>
+		</brn-column-def>
+
+		<brn-column-def name="formation_year">
+			<hlm-th class="w-48" *brnHeaderDef>
+				<button
+					hlmBtn
+					size="sm"
+					variant="ghost"
+					(click)="handleFormationYearSortChange()"
+				>
+					Formation Year
+					<hlm-icon class="ml-3 tabular-nums" size="sm" name="radixCaretSort" />
+				</button>
+			</hlm-th>
+
+			<hlm-td
+				class="w-48 justify-center font-medium tabular-nums"
+				*brnCellDef="let element"
+			>
+				{{ element.formationYear }}
+			</hlm-td>
+		</brn-column-def>
+
+		<brn-column-def name="actions">
+			<hlm-th class="ml-auto mr-0 w-16 justify-center" *brnHeaderDef></hlm-th>
+
+			<hlm-td
+				class="ml-auto mr-0 w-16 justify-center"
+				*brnCellDef="let element"
+			>
+				<button
+					hlmBtn
+					variant="ghost"
+					class="h-6 w-6 p-0.5"
+					align="end"
+					[brnMenuTriggerFor]="menu"
+				>
+					<hlm-icon class="h-4 w-4" name="radixDotsHorizontal" />
+				</button>
+
+				<ng-template #menu>
+					<hlm-menu>
+						<hlm-menu-label>Actions</hlm-menu-label>
+
+						<hlm-menu-separator />
+
+						<hlm-menu-group>
+							<button hlmMenuItem>Copy country ID</button>
+						</hlm-menu-group>
+						<hlm-menu-separator />
+
+						<hlm-menu-group>
+							<button hlmMenuItem>View ruler</button>
+
+							<button hlmMenuItem>View country details</button>
+						</hlm-menu-group>
+					</hlm-menu>
+				</ng-template>
+			</hlm-td>
+		</brn-column-def>
+
+		<div
+			class="flex items-center justify-center p-20 text-muted-foreground"
+			brnNoDataRow
+		>
+			No data
+		</div>
+	</brn-table>
+	<div
+		class="mt-4 flex flex-col justify-between sm:flex-row sm:items-center"
+		*brnPaginator="
+			let ctx;
+			totalElements: _totalElements();
+			pageSize: _pageSize();
+			onStateChange: _onStateChange
+		"
+	>
+		<span class="text-sm">{{ _totalElements() }} row(s) </span>
+
+		<div class="mt-2 flex sm:mt-0">
+			<select
+				[ngModel]="_pageSize()"
+				(ngModelChange)="_pageSize.set($event)"
+				hlmInput
+				size="sm"
+				class="mr-1 inline-flex pr-8"
+			>
+				@for (size of _availablePageSizes; track size) {
+					<option [value]="size">{{ size === 10_000 ? "All" : size }}</option>
+				}
+			</select>
+
+			<div class="flex space-x-1">
+				<button
+					size="sm"
+					variant="outline"
+					hlmBtn
+					[disabled]="!ctx.decrementable()"
+					(click)="ctx.decrement()"
+				>
+					Previous
+				</button>
+				<button
+					size="sm"
+					variant="outline"
+					hlmBtn
+					[disabled]="!ctx.incrementable()"
+					(click)="ctx.increment()"
+				>
+					Next
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
