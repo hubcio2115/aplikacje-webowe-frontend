@@ -6,35 +6,22 @@ import {
 	ReactiveFormsModule,
 	Validators,
 } from "@angular/forms";
-import { HlmButtonDirective } from "@spartan-ng/ui-button-helm";
-import {
-	HlmCardContentDirective,
-	HlmCardDescriptionDirective,
-	HlmCardDirective,
-	HlmCardFooterDirective,
-	HlmCardHeaderDirective,
-	HlmCardTitleDirective,
-} from "@spartan-ng/ui-card-helm";
-import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
-import { HlmLabelDirective } from "@spartan-ng/ui-label-helm";
+import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
+import { HlmInputModule } from "@spartan-ng/ui-input-helm";
+
+import { HlmCardModule } from "~/ui/ui-card-helm/src";
+import { HlmLabelModule } from "~/ui/ui-label-helm/src";
 
 @Component({
 	selector: "app-login-form",
 	standalone: true,
 	imports: [
-		HlmCardContentDirective,
-		HlmCardDescriptionDirective,
-		HlmCardDirective,
-		HlmCardFooterDirective,
-		HlmCardHeaderDirective,
-		HlmCardTitleDirective,
-
-		HlmInputDirective,
-		HlmLabelDirective,
-		HlmButtonDirective,
-
-		ReactiveFormsModule,
 		CommonModule,
+		ReactiveFormsModule,
+		HlmCardModule,
+		HlmInputModule,
+		HlmLabelModule,
+		HlmButtonModule,
 	],
 	templateUrl: "./login-form.component.html",
 })
