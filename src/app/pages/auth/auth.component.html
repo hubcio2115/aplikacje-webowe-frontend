@@ -1,27 +1,17 @@
-<brn-tabs class="w-[600px]" value="login">
-	<brn-tabs-list
-		hlmTabsList
-		class="grid w-full grid-cols-2"
-		aria-label="auth forms"
-	>
-		<button (click)="changeTab('login')" hlmTabsTrigger brnTabsTrigger="login">
-			Login
-		</button>
+<div [brnTabs]="tab()" class="w-[600px]">
+	<hlm-tabs-list class="grid w-full grid-cols-2" aria-label="auth forms">
+		<button (click)="changeTab('login')" hlmTabsTrigger="login">Login</button>
 
-		<button
-			(click)="changeTab('register')"
-			hlmTabsTrigger
-			brnTabsTrigger="register"
-		>
+		<button (click)="changeTab('register')" hlmTabsTrigger="register">
 			Register
 		</button>
-	</brn-tabs-list>
+	</hlm-tabs-list>
 
-	<div hlmTabsContent brnTabsContent="login">
+	<div hlmTabsContent="login">
 		<app-login-form />
 	</div>
 
-	<div hlmTabsContent brnTabsContent="register">
+	<div hlmTabsContent="register">
 		<app-register-form />
 	</div>
-</brn-tabs>
+</div>

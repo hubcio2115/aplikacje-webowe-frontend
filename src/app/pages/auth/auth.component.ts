@@ -7,22 +7,13 @@ import {
 	signal,
 } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { HlmBadgeDirective } from "@spartan-ng/ui-badge-helm";
-import {
-	BrnTabsComponent,
-	BrnTabsContentDirective,
-	BrnTabsListComponent,
-	BrnTabsTriggerDirective,
-} from "@spartan-ng/ui-tabs-brain";
-import {
-	HlmTabsContentDirective,
-	HlmTabsListDirective,
-	HlmTabsTriggerDirective,
-} from "@spartan-ng/ui-tabs-helm";
+import { BrnTabsModule } from "@spartan-ng/ui-tabs-brain";
 import { z } from "zod";
 
 import { LoginFormComponent } from "~/app/components/login-form/login-form.component";
 import { RegisterFormComponent } from "~/app/components/register-form/register-form.component";
+import { HlmBadgeModule } from "~/ui/ui-badge-helm/src";
+import { HlmTabsModule } from "~/ui/ui-tabs-helm/src";
 
 const tabSchema = z.enum(["login", "register"]);
 type Tab = z.infer<typeof tabSchema>;
@@ -31,16 +22,10 @@ type Tab = z.infer<typeof tabSchema>;
 	selector: "app-auth-component",
 	standalone: true,
 	imports: [
-		BrnTabsComponent,
-		BrnTabsListComponent,
-		BrnTabsTriggerDirective,
-		BrnTabsContentDirective,
+		BrnTabsModule,
 
-		HlmTabsListDirective,
-		HlmTabsTriggerDirective,
-		HlmTabsContentDirective,
-
-		HlmBadgeDirective,
+		HlmTabsModule,
+		HlmBadgeModule,
 
 		LoginFormComponent,
 		RegisterFormComponent,
@@ -67,7 +52,7 @@ export class AuthComponent implements OnInit {
 		this.#route.queryParamMap.subscribe((params) => {
 			const parsedTab = tabSchema.safeParse(params.get("tab"));
 
-			if (parsedTab.success) this.tab.set(parsedTab.data);
+			if (parsedTab.success) this.changeTab(parsedTab.data);
 		});
 	}
 
