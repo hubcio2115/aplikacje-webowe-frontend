@@ -1,7 +1,7 @@
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
 	root: true,
-	ignorePatterns: ["projects/**/*"],
+	ignorePatterns: ["node_modules/**/*"],
 	parserOptions: {
 		project: true,
 		tsconfigRootDir: __dirname,
@@ -36,6 +36,11 @@ module.exports = {
 				],
 				"@typescript-eslint/unbound-method": "off",
 				"@typescript-eslint/consistent-type-definitions": "off",
+				"@typescript-eslint/no-non-null-assertion": "off",
+				"@typescript-eslint/no-extraneous-class": "off",
+				"@angular-eslint/directive-selector": "off",
+				"@angular-eslint/component-selector": "off",
+				"@angular-eslint/no-host-metadata-property": "off",
 			},
 		},
 		{

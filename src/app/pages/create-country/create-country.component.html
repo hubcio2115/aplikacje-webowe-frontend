@@ -1,0 +1,40 @@
+<div>
+	<button
+		hlmBtn
+		variant="link"
+		class="flex items-center p-0"
+		(click)="location.back()"
+	>
+		<hlm-icon name="radixChevronLeft" size="sm" />
+
+		Go back
+	</button>
+
+	<h1 class="mb-6 text-2xl font-bold">Create Country</h1>
+
+	<app-country-form
+		[isEditForm]="false"
+		[onSubmit]="onSubmit"
+		[pending]="createCountryMutation().isPending"
+	/>
+
+	<hlm-dialog>
+		<button id="errorTrigger" class="hidden" brnDialogTrigger>
+			placeholder
+		</button>
+
+		<hlm-dialog-content class="sm:max-w-[425px]" *brnDialogContent="let ctx">
+			<hlm-dialog-header>
+				<h3 hlmDialogTitle>Error</h3>
+			</hlm-dialog-header>
+
+			<div>{{ errorMessage() }}</div>
+
+			<hlm-dialog-footer>
+				<button hlmBtn variant="destructive" (click)="ctx.close()">
+					Close
+				</button>
+			</hlm-dialog-footer>
+		</hlm-dialog-content>
+	</hlm-dialog>
+</div>

@@ -1,15 +1,15 @@
 import { NgModule } from "@angular/core";
 
 import { HlmTabsContentDirective } from "./lib/hlm-tabs-content.directive";
-import { HlmTabsListDirective } from "./lib/hlm-tabs-list.directive";
+import { HlmTabsListComponent } from "./lib/hlm-tabs-list.component";
 import { HlmTabsTriggerDirective } from "./lib/hlm-tabs-trigger.directive";
 
 export * from "./lib/hlm-tabs-content.directive";
-export * from "./lib/hlm-tabs-list.directive";
+export * from "./lib/hlm-tabs-list.component";
 export * from "./lib/hlm-tabs-trigger.directive";
 
 export const HlmTabsImports = [
-	HlmTabsListDirective,
+	HlmTabsListComponent,
 	HlmTabsTriggerDirective,
 	HlmTabsContentDirective,
 ] as const;

@@ -1,9 +1,9 @@
-import { Directive, Input, computed, signal } from "@angular/core";
+import { Component, Input, computed, signal } from "@angular/core";
 import { hlm } from "@spartan-ng/ui-core";
 import { VariantProps, cva } from "class-variance-authority";
 import { ClassValue } from "clsx";
 
-const listVariants = cva(
+export const listVariants = cva(
 	"inline-flex items-center justify-center rounded-md bg-muted p-1 text-muted-foreground",
 	{
 		variants: {
@@ -19,14 +19,15 @@ const listVariants = cva(
 );
 type ListVariants = VariantProps<typeof listVariants>;
 
-@Directive({
-	selector: "[hlmTabsList]",
+@Component({
+	selector: "hlm-tabs-list",
 	standalone: true,
+	template: "<ng-content/>",
 	host: {
 		"[class]": "_computedClass()",
 	},
 })
-export class HlmTabsListDirective {
+export class HlmTabsListComponent {
 	private readonly _userCls = signal<ClassValue>("");
 	@Input()
 	set class(userCls: ClassValue) {

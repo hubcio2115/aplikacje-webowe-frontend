@@ -1,9 +1,7 @@
 import { DatePipe, DecimalPipe, TitleCasePipe } from "@angular/common";
-import { HttpClient } from "@angular/common/http";
 import {
 	Component,
 	HostBinding,
-	OnInit,
 	TrackByFunction,
 	computed,
 	inject,
@@ -11,35 +9,37 @@ import {
 } from "@angular/core";
 import { toObservable, toSignal } from "@angular/core/rxjs-interop";
 import { FormsModule } from "@angular/forms";
+import { RouterLink } from "@angular/router";
 import {
 	radixCaretSort,
 	radixCheck,
 	radixChevronDown,
 	radixCross2,
-	radixDotsHorizontal,
+	radixFilePlus,
+	radixFileText,
 } from "@ng-icons/radix-icons";
 import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
 import { BrnCheckboxComponent } from "@spartan-ng/ui-checkbox-brain";
-import {
-	HlmCheckboxCheckIconComponent,
-	HlmCheckboxDirective,
-} from "@spartan-ng/ui-checkbox-helm";
-import { HlmIconComponent, provideIcons } from "@spartan-ng/ui-icon-helm";
-import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
-import { BrnMenuTriggerDirective } from "@spartan-ng/ui-menu-brain";
-import { HlmMenuModule } from "@spartan-ng/ui-menu-helm";
+import { HlmInputModule } from "@spartan-ng/ui-input-helm";
+import { BrnMenuModule } from "@spartan-ng/ui-menu-brain";
 import {
 	BrnTableModule,
 	PaginatorState,
 	useBrnColumnManager,
 } from "@spartan-ng/ui-table-brain";
-import { HlmTableModule } from "@spartan-ng/ui-table-helm";
-import { debounceTime } from "rxjs";
+import { BrnTooltipContentDirective } from "@spartan-ng/ui-tooltip-brain";
+import { injectQuery } from "@tanstack/angular-query-experimental";
+import { debounceTime, lastValueFrom } from "rxjs";
 
 import { SnakeCaseToSeparateCapitalizedPipe } from "~/app/shared/pipes/snakeCaseToSeparateCapitalized";
+import { CountryService } from "~/app/shared/services/country.service";
 import { Country } from "~/app/shared/types/Country.interface";
-import { environment } from "~/environments/environment";
-import { HlmLabelDirective } from "~/ui/ui-label-helm/src";
+import { HlmCheckboxModule } from "~/ui/ui-checkbox-helm/src";
+import { HlmIconModule, provideIcons } from "~/ui/ui-icon-helm/src";
+import { HlmLabelModule } from "~/ui/ui-label-helm/src";
+import { HlmMenuModule } from "~/ui/ui-menu-helm/src";
+import { HlmTableModule } from "~/ui/ui-table-helm/src";
+import { HlmTooltipModule } from "~/ui/ui-tooltip-helm/src";
 
 @Component({
 	selector: "app-home",
@@ -47,7 +47,7 @@ import { HlmLabelDirective } from "~/ui/ui-label-helm/src";
 	imports: [
 		FormsModule,
 
-		BrnMenuTriggerDirective,
+		BrnMenuModule,
 		HlmMenuModule,
 
 		BrnTableModule,
@@ -59,32 +59,37 @@ import { HlmLabelDirective } from "~/ui/ui-label-helm/src";
 		DatePipe,
 		TitleCasePipe,
 
-		HlmIconComponent,
+		HlmIconModule,
 
-		HlmLabelDirective,
-		HlmInputDirective,
+		HlmLabelModule,
+		HlmInputModule,
 
 		SnakeCaseToSeparateCapitalizedPipe,
 
 		BrnCheckboxComponent,
-		HlmCheckboxCheckIconComponent,
-		HlmCheckboxDirective,
+		HlmCheckboxModule,
+
+		BrnTooltipContentDirective,
+		HlmTooltipModule,
+
+		RouterLink,
 	],
 	providers: [
 		provideIcons({
 			radixChevronDown,
-			radixDotsHorizontal,
+			radixFileText,
 			radixCaretSort,
 			radixCheck,
 			radixCross2,
+			radixFilePlus,
 		}),
 	],
 	templateUrl: "./home.component.html",
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
 	@HostBinding("class") class = "flex flex-1 justify-center items-center";
 
-	readonly #httpClient = inject(HttpClient);
+	readonly #countryService = inject(CountryService);
 
 	readonly _rawFilterInput = signal("");
 	readonly #debouncedFilter = toSignal(
@@ -109,31 +114,30 @@ export class HomeComponent implements OnInit {
 		"actions",
 	]);
 
-	readonly #countries = signal<Country[]>([]);
+	readonly countries = injectQuery(() => ({
+		queryKey: ["countries"],
+		queryFn: () => lastValueFrom(this.#countryService.getAll()),
+	}));
 	readonly #filteredCountries = computed(() => {
 		const nameFilter = this._nameFilter().trim().toLowerCase();
 		const inEuropeCheckbox = this._inEuropeCheckbox();
 
+		if (!this.countries.data()) return [];
+
 		const filteredByName =
 			nameFilter.length > 0
-				? this.#countries().filter((country) =>
-						country.name.toLowerCase().includes(nameFilter),
-				  )
-				: this.#countries();
+				? this.countries
+						.data()!
+						.filter((country) =>
+							country.name.toLowerCase().includes(nameFilter),
+						)
+				: this.countries.data()!;
 
 		if (inEuropeCheckbox)
 			return filteredByName.filter((country) => country.isInEurope);
 
 		return filteredByName;
 	});
-
-	ngOnInit(): void {
-		this.#httpClient
-			.get<Country[]>(`${environment.apiUrl}/api/countries`)
-			.subscribe((value) => {
-				this.#countries.set(value);
-			});
-	}
 
 	readonly #nameSort = signal<"ASC" | "DESC" | null>("ASC");
 	readonly #gdpSort = signal<"ASC" | "DESC" | null>(null);
@@ -145,31 +149,36 @@ export class HomeComponent implements OnInit {
 
 		const start = this.#displayedIndices().start;
 		const end = this.#displayedIndices().end + 1;
-		const countries = this.#filteredCountries();
+		const result = this.#filteredCountries();
 
-		let result: Country[];
-		if (this.#nameSort()) {
-			result = [...countries].sort(
-				(c1, c2) =>
-					(nameSort === "ASC" ? 1 : -1) * c1.name.localeCompare(c2.name),
-			);
-		} else if (this.#gdpSort()) {
-			result = [...countries].sort(
-				(c1, c2) => (gdpSort === "ASC" ? 1 : -1) * (c1.gdp - c2.gdp),
-			);
-		} else if (this.#formationYearSort()) {
-			result = [...countries].sort(
-				(c1, c2) =>
-					(formationYearSort === "ASC" ? 1 : -1) *
-					(parseInt(c1.formationYear) - parseInt(c2.formationYear)),
-			);
-		} else result = countries;
+		switch (true) {
+			case !!this.#nameSort():
+				result.sort(
+					(c1, c2) =>
+						(nameSort === "ASC" ? 1 : -1) * c1.name.localeCompare(c2.name),
+				);
+				break;
+
+			case !!this.#gdpSort():
+				result.sort(
+					(c1, c2) => (gdpSort === "ASC" ? 1 : -1) * (c1.gdp - c2.gdp),
+				);
+				break;
+
+			case !!this.#formationYearSort():
+				result.sort(
+					(c1, c2) =>
+						(formationYearSort === "ASC" ? 1 : -1) *
+						(parseInt(c1.formationYear) - parseInt(c2.formationYear)),
+				);
+				break;
+		}
 
 		return result.slice(start, end);
 	});
 
 	readonly _trackBy: TrackByFunction<Country> = (_: number, c: Country) => c.id;
-	readonly _totalElements = computed(() => this.#filteredCountries().length);
+	readonly _totalCountries = computed(() => this.#filteredCountries().length);
 	readonly _onStateChange = ({ startIndex, endIndex }: PaginatorState) => {
 		this.#displayedIndices.set({ start: startIndex, end: endIndex });
 	};

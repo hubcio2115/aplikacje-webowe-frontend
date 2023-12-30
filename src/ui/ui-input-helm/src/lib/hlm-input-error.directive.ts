@@ -3,7 +3,7 @@ import { hlm } from "@spartan-ng/ui-core";
 import { VariantProps, cva } from "class-variance-authority";
 import { ClassValue } from "clsx";
 
-const inputErrorVariants = cva("text-destructive text-sm font-medium", {
+export const inputErrorVariants = cva("text-destructive text-sm font-medium", {
 	variants: {},
 	defaultVariants: {},
 });
