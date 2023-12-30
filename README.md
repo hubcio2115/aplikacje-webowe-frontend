@@ -1,7 +1,7 @@
 - Interfejs [DST]
 	- [ ] Zarówno „przeglądarkowy” jak i (responsywny) „mobilny” (z wykorzystaniem SCSS)
   - [x] Interfejs aplikacji powinien być przemyślany i jasno komunikować użytkownikowi, jakie działania podjął (np.: wyświetlanie aktualnego sposobu sortowania lub przycisk cofnij na podstronach). Trzymaj się zasady: Nie każ mi myśleć
-	- [x] Interfejs powinien spełniać aktualne standardy stylowania (możesz użyć gotowej biblioteki)
+  - [x] Interfejs powinien spełniać aktualne standardy stylowania (możesz użyć gotowej biblioteki)
 
 - Funkcjonalność (wszelka obsługa po stronie FE)
 	- Użytkownicy
