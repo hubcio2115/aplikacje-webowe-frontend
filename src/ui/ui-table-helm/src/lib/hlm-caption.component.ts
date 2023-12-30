@@ -1,30 +1,29 @@
 import {
-	booleanAttribute,
 	ChangeDetectionStrategy,
 	Component,
+	Input,
+	ViewEncapsulation,
+	booleanAttribute,
 	computed,
 	effect,
 	inject,
-	Input,
 	signal,
-	ViewEncapsulation,
-} from '@angular/core';
-import { hlm } from '@spartan-ng/ui-core';
-import { ClassValue } from 'clsx';
-import { HlmTableComponent } from '../index';
+} from "@angular/core";
+import { hlm } from "@spartan-ng/ui-core";
+import { ClassValue } from "clsx";
+
+import { HlmTableComponent } from "../index";
 
 let captionIdSequence = 0;
 
 @Component({
-	selector: 'hlm-caption',
+	selector: "hlm-caption",
 	standalone: true,
 	host: {
-		'[class]': '_computedClass()',
-		'[id]': '_id()',
+		"[class]": "_computedClass()",
+		"[id]": "_id()",
 	},
-	template: `
-		<ng-content />
-	`,
+	template: ` <ng-content /> `,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 })
@@ -32,15 +31,17 @@ export class HlmCaptionComponent {
 	private readonly _table = inject(HlmTableComponent, { optional: true });
 
 	private readonly _hidden = signal(false);
-	private readonly _userCls = signal<ClassValue>('');
+	private readonly _userCls = signal<ClassValue>("");
 	protected readonly _computedClass = computed(() =>
 		hlm(
-			'text-center block mt-4 text-sm text-muted-foreground',
-			this._hidden() ? 'sr-only' : 'order-last',
+			"text-center block mt-4 text-sm text-muted-foreground",
+			this._hidden() ? "sr-only" : "order-last",
 			this._userCls(),
 		),
 	);
-	protected readonly _id = signal<string | null | undefined>(`${captionIdSequence++}`);
+	protected readonly _id = signal<string | null | undefined>(
+		`${captionIdSequence++}`,
+	);
 
 	@Input({ transform: booleanAttribute })
 	public truncate = false;

@@ -3,7 +3,7 @@ import { hlm } from "@spartan-ng/ui-core";
 import { VariantProps, cva } from "class-variance-authority";
 import { ClassValue } from "clsx";
 
-const cardHeaderVariants = cva("flex p-6", {
+export const cardHeaderVariants = cva("flex p-6", {
 	variants: {
 		direction: {
 			row: "flex-row items-center space-x-1.5",

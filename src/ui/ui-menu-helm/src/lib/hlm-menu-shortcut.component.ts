@@ -1,19 +1,17 @@
-import { Component, Input, computed, signal } from '@angular/core';
-import { hlm } from '@spartan-ng/ui-core';
-import { ClassValue } from 'clsx';
+import { Component, Input, computed, signal } from "@angular/core";
+import { hlm } from "@spartan-ng/ui-core";
+import { ClassValue } from "clsx";
 
 @Component({
-	selector: 'hlm-menu-shortcut',
+	selector: "hlm-menu-shortcut",
 	standalone: true,
-	template: `
-		<ng-content />
-	`,
+	template: ` <ng-content /> `,
 	host: {
-		'[class]': '_computedClass()',
+		"[class]": "_computedClass()",
 	},
 })
 export class HlmMenuShortcutComponent {
-	private readonly _userCls = signal<ClassValue>('');
+	private readonly _userCls = signal<ClassValue>("");
 	@Input()
 	set class(userCls: ClassValue) {
 		this._userCls.set(userCls);
@@ -21,6 +19,9 @@ export class HlmMenuShortcutComponent {
 
 	protected _computedClass = computed(() => this._generateClass());
 	private _generateClass() {
-		return hlm('ml-auto font-light text-xs tracking-widest opacity-60', this._userCls());
+		return hlm(
+			"ml-auto font-light text-xs tracking-widest opacity-60",
+			this._userCls(),
+		);
 	}
 }

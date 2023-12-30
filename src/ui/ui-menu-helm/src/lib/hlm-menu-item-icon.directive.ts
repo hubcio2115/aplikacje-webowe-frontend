@@ -1,13 +1,13 @@
-import { computed, Directive, inject, Input, signal } from '@angular/core';
-import { hlm } from '@spartan-ng/ui-core';
-import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
-import { ClassValue } from 'clsx';
+import { Directive, Input, computed, inject, signal } from "@angular/core";
+import { hlm } from "@spartan-ng/ui-core";
+import { HlmIconComponent } from "@spartan-ng/ui-icon-helm";
+import { ClassValue } from "clsx";
 
 @Directive({
-	selector: '[hlmMenuIcon]',
+	selector: "[hlmMenuIcon]",
 	standalone: true,
 	host: {
-		'[class]': '_computedClass()',
+		"[class]": "_computedClass()",
 	},
 })
 export class HlmMenuItemIconDirective {
@@ -15,9 +15,9 @@ export class HlmMenuItemIconDirective {
 
 	constructor() {
 		if (!this._menuIcon) return;
-		this._menuIcon.size = 'none';
+		this._menuIcon.size = "none";
 	}
-	private readonly _userCls = signal<ClassValue>('');
+	private readonly _userCls = signal<ClassValue>("");
 	@Input()
 	set class(userCls: ClassValue) {
 		this._userCls.set(userCls);
@@ -25,6 +25,6 @@ export class HlmMenuItemIconDirective {
 
 	protected _computedClass = computed(() => this._generateClass());
 	private _generateClass() {
-		return hlm('mr-2 h-4 w-4', this._userCls());
+		return hlm("mr-2 h-4 w-4", this._userCls());
 	}
 }

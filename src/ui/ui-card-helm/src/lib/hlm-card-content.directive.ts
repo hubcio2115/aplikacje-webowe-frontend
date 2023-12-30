@@ -3,7 +3,7 @@ import { hlm } from "@spartan-ng/ui-core";
 import { VariantProps, cva } from "class-variance-authority";
 import { ClassValue } from "clsx";
 
-const cardContentVariants = cva("p-6 pt-0", {
+export const cardContentVariants = cva("p-6 pt-0", {
 	variants: {},
 	defaultVariants: {},
 });

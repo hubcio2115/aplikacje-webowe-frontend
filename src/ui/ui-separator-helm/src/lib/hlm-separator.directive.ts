@@ -1,17 +1,22 @@
 import { Directive, Input, computed, signal } from "@angular/core";
 import { hlm } from "@spartan-ng/ui-core";
-import { BrnMenuItemDirective } from "@spartan-ng/ui-menu-brain";
 import { ClassValue } from "clsx";
 
+export type HlmSeparatorOrientation = "horizontal" | "vertical";
 @Directive({
-	selector: "[hlmMenuBarItem]",
+	selector: "[hlmSeparator],brn-separator[hlm]",
 	standalone: true,
 	host: {
 		"[class]": "_computedClass()",
 	},
-	hostDirectives: [BrnMenuItemDirective],
 })
-export class HlmMenuBarItemDirective {
+export class HlmSeparatorDirective {
+	private readonly _orientation = signal<HlmSeparatorOrientation>("horizontal");
+	@Input()
+	set orientation(value: HlmSeparatorOrientation) {
+		this._orientation.set(value);
+	}
+
 	private readonly _userCls = signal<ClassValue>("");
 	@Input()
 	set class(userCls: ClassValue) {
@@ -21,7 +26,10 @@ export class HlmMenuBarItemDirective {
 	protected _computedClass = computed(() => this._generateClass());
 	private _generateClass() {
 		return hlm(
-			"flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground aria-expanded:bg-accent aria-expanded:text-accent-foreground",
+			"inline-flex shrink-0 border-0 bg-border",
+			this._orientation() === "horizontal"
+				? "h-[1px] w-full"
+				: "h-full w-[1px]",
 			this._userCls(),
 		);
 	}

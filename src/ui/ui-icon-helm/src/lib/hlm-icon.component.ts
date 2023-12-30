@@ -36,7 +36,7 @@ export const iconVariants = cva("inline-flex", {
 	},
 });
 
-export type IconSize = DefinedSizes | (NonNullable<unknown> & string);
+export type IconSize = DefinedSizes | (string & NonNullable<unknown>);
 
 const isDefinedSize = (size: IconSize): size is DefinedSizes => {
 	return DEFINED_SIZES.includes(size as DefinedSizes);
@@ -71,7 +71,9 @@ export class HlmIconComponent implements OnDestroy {
 
 	private readonly _hostClasses = signal<string>("");
 
-	protected readonly _name = signal<IconName | string>("");
+	protected readonly _name = signal<IconName | (string & NonNullable<unknown>)>(
+		"",
+	);
 	protected readonly _size = signal<IconSize>("base");
 	protected readonly _color = signal<string | undefined>(undefined);
 	protected readonly _strokeWidth = signal<string | number | undefined>(
@@ -79,7 +81,7 @@ export class HlmIconComponent implements OnDestroy {
 	);
 	protected readonly userCls = signal<ClassValue>("");
 	protected readonly ngIconSize = computed(() =>
-		isDefinedSize(this._size()) ? "100%" : (this._size() as string),
+		isDefinedSize(this._size()) ? "100%" : this._size(),
 	);
 	protected readonly ngIconCls = signal<ClassValue>("");
 
@@ -101,10 +103,11 @@ export class HlmIconComponent implements OnDestroy {
 					if (mutation.attributeName !== "class") return;
 					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 					// @ts-expect-error
-					this._hostClasses.set(mutation.target?.["className"] ?? "");
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unnecessary-condition
+					this._hostClasses.set(mutation.target?.className ?? "");
 				});
 			});
-			this._mutObs.observe(this._host.nativeElement, {
+			this._mutObs.observe(this._host.nativeElement as Node, {
 				attributes: true,
 			});
 		}
@@ -116,7 +119,7 @@ export class HlmIconComponent implements OnDestroy {
 	}
 
 	@Input()
-	set name(value: IconName | string) {
+	set name(value: IconName | (string & NonNullable<unknown>)) {
 		this._name.set(value);
 	}
 
