@@ -1,27 +1,43 @@
-# Frontend
+- Interfejs [DST]
+	- [ ] Zarówno „przeglądarkowy” jak i (responsywny) „mobilny” (z wykorzystaniem SCSS)
+  - [x] Interfejs aplikacji powinien być przemyślany i jasno komunikować użytkownikowi, jakie działania podjął (np.: wyświetlanie aktualnego sposobu sortowania lub przycisk cofnij na podstronach). Trzymaj się zasady: Nie każ mi myśleć
+	- [x] Interfejs powinien spełniać aktualne standardy stylowania (możesz użyć gotowej biblioteki)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.6.
+- Funkcjonalność (wszelka obsługa po stronie FE)
+	- Użytkownicy
+		- [ ] Obsługa logowania
+		- [ ] Zabezpieczone widoki w zależności od wymaganej autoryzacji (w przypadku braku wymaganej autoryzacji przekierowanie na widok logowania)
+		- [ ] Wyświetlanie w navbarze informacji o aktualnie zalogowanym użytkowniku (np. login lub imię i nazwisko)
+		- [ ] Dedykowany widok do zmiany danych aktualnie zalogowanego użytkownika
+  - Poruszanie się po aplikacji **\[DST\]**
+    - [x] Powinna być możliwość przeglądania danych w strukturze master-detail
+    - [x] Widok szczegółowy powinien umożliwić edycje i usunięcie
+    - [x] Wszelkie operacje krytyczne powinny wymagać potwierdzenia przez modal component
+    - [x] Widok "Page not found" w przypadku nieprawidłowego adresu
+  - Pobieranie danych
+    - [x] Powinna być możliwość wyświetlenia wszystkich danych **\[DST\]**
+    	- [x] z podziałem na strony (paginacja)
+    - [x] Sortowanie na liście **\[DST\]**
+    	- [x] Alfabetycznie, wg. daty oraz wg. danych liczbowych
+      - [x] Możliwość filtrowania na liście wg pól **\[DST\]**
+      	- [?] o trzech różnych typach (np.: checkbox, dropdown i text oraz inne kombinacje)
+  - Dodawanie / edycja danych
+  	- [x] Wspólny formularz dla operacji dodawania i edycji **\[DST\]**
+    - Formularze
+    	- [x] Pola w formularzach powinny być walidowane **\[DST\]**
+      	- [x] Własny walidator
+        - [x] Minimum jeden formularz, z co najmniej jednym poziomem zagnieżdżenia **\[DST\]**
+        	- [ ] Minimum jeden formularz zawierający pod dowolnym polem grupę formularzy (FormArray)
+        - [x] Obsługa błędów zwracanych przez backend (np. nieudana aktualizacja nieistniejącego elementu lub usuwanie elementu będącego w relacji z innymi) **\[DST\]**
+  - [ ] Internacjonalizacja **\[BDB\]**
 
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- Wymagania niefunkcjonalne
+	- [x] Aplikacja powinna być podzielona na moduły w zależności od funkcjonalności (m.in. core i shared) **\[DST\]**
+  - [ ] Zarządzanie stanem NgRx **\[BDB\]**
+  - Zarówno FE, jak i BE nie powinny zwracać żadnych błędów.
+  - Oceniana będzie również własna inicjatywa, styl i czystość kodu
+  - Obiekty typujemy przez interfejsy, nie klasy
+  - Interfejsy powinny być readonly
+  	- Formularze powinny być w pełni otypowane
+    - [x] Linter nie powinien zwracać żadnych błędów (podłączona konfiguracja TypeScript + Angular)
+  - Commity w repozytorium powinny sensownie opisywać to, co zostało zrobione.
