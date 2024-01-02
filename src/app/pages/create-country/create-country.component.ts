@@ -50,7 +50,7 @@ import { HlmLabelDirective } from "~/ui/ui-label-helm/src";
 })
 export class CreateCountryComponent {
 	@HostBinding("class") class =
-		"flex flex-col w-full justify-center items-center";
+		"flex flex-col w-full justify-center items-center flex-1";
 
 	readonly router = inject(Router);
 	readonly location = inject(Location);

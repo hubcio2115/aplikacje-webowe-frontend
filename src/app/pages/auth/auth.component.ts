@@ -33,7 +33,7 @@ type Tab = z.infer<typeof tabSchema>;
 	templateUrl: "./auth.component.html",
 })
 export class AuthComponent implements OnInit {
-	@HostBinding("class") class = "flex justify-center pt-36 w-full";
+	@HostBinding("class") class = "flex justify-center pt-12 md:pt-36 w-full";
 
 	#route = inject(ActivatedRoute);
 	#router = inject(Router);
