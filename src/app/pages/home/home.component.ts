@@ -32,6 +32,7 @@ import { injectQuery } from "@tanstack/angular-query-experimental";
 import { debounceTime, lastValueFrom } from "rxjs";
 
 import { SnakeCaseToSeparateCapitalizedPipe } from "~/app/shared/pipes/snakeCaseToSeparateCapitalized";
+import { AuthService } from "~/app/shared/services/auth.service";
 import { CountryService } from "~/app/shared/services/country.service";
 import { Country } from "~/app/shared/types/Country.interface";
 import { HlmCheckboxModule } from "~/ui/ui-checkbox-helm/src";
@@ -90,6 +91,8 @@ export class HomeComponent {
 	@HostBinding("class") class = "flex flex-1 justify-center items-center";
 
 	readonly #countryService = inject(CountryService);
+
+	readonly authStore = inject(AuthService).getAuthStore();
 
 	readonly _rawFilterInput = signal("");
 	readonly #debouncedFilter = toSignal(

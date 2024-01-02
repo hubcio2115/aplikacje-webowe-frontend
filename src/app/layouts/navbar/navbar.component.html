@@ -1,0 +1,61 @@
+<div class="flex justify-between border-b border-gray-500 p-3">
+	<h1 class="cursor-pointer font-bold" routerLink="/">
+		Countries <span class="text-fuchsia-900">CRUD</span>
+	</h1>
+
+	<button
+		hlmBtn
+		variant="ghost"
+		class="h-6 w-6 p-0.5"
+		align="end"
+		[brnMenuTriggerFor]="menu"
+	>
+		<hlm-avatar variant="medium">
+			@if (!!userInitials().length) {
+				<span hlmAvatarFallback>{{ userInitials() }}</span>
+			} @else {
+				<div hlmAvatarFallback>
+					<hlm-icon name="radixPerson" variant="sm" />
+				</div>
+			}
+		</hlm-avatar>
+	</button>
+
+	<ng-template #menu>
+		<hlm-menu>
+			<hlm-menu-group>
+				@if (authService.getAuthStore().user()) {
+					<button
+						hlmMenuItem
+						class="flex justify-between"
+						routerLink="/user-details"
+					>
+						User details
+						<hlm-icon name="radixGear" variant="none" class="h-4 w-4" />
+					</button>
+
+					<button
+						hlmMenuItem
+						class="flex justify-between text-red-500"
+						(click)="handleLogout()"
+					>
+						Log out
+						<hlm-icon name="radixExit" variant="none" class="h-4 w-4" />
+					</button>
+				} @else {
+					<button
+						hlmMenuItem
+						class="flex justify-between"
+						routerLink="/auth"
+						[queryParams]="{ tab: 'login' }"
+					>
+						Log in
+						<hlm-icon name="radixEnter" variant="none" class="h-4 w-4" />
+					</button>
+				}
+			</hlm-menu-group>
+		</hlm-menu>
+	</ng-template>
+</div>
+
+<router-outlet />

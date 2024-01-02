@@ -18,11 +18,10 @@
 			/>
 		</label>
 
-		@if (
-			registerForm.controls.firstName.dirty &&
-			registerForm.controls.firstName.hasError("required")
-		) {
-			<p class="text-red-500">Please provide your first name.</p>
+		@if (registerForm.controls.firstName.dirty) {
+			@if (registerForm.controls.firstName.hasError("required")) {
+				<p class="text-red-500">Please provide your first name.</p>
+			}
 		}
 
 		<label class="my-4 block" hlmLabel>
@@ -35,11 +34,10 @@
 			/>
 		</label>
 
-		@if (
-			registerForm.controls.lastName.dirty &&
-			registerForm.controls.lastName.hasError("required")
-		) {
-			<p class="text-red-500">Please provide your last name.</p>
+		@if (registerForm.controls.lastName.dirty) {
+			@if (registerForm.controls.lastName.hasError("required")) {
+				<p class="text-red-500">Please provide your last name.</p>
+			}
 		}
 
 		<label class="col-span-2 my-4 block" hlmLabel>
@@ -48,20 +46,16 @@
 				class="mt-1.5 w-full"
 				type="email"
 				hlmInput
-				formControlName="lastName"
+				formControlName="email"
 			/>
 		</label>
 
-		@if (
-			registerForm.controls.email.dirty &&
-			registerForm.controls.email.hasError("required")
-		) {
-			<p class="text-red-500">Please provide your email.</p>
-		} @else if (
-			registerForm.controls.email.dirty &&
-			registerForm.controls.email.hasError("email")
-		) {
-			<p class="text-red-500">Provided email is of wrong format.</p>
+		@if (registerForm.controls.email.dirty) {
+			@if (registerForm.controls.email.hasError("required")) {
+				<p class="text-red-500">Please provide your email.</p>
+			} @else if (registerForm.controls.email.hasError("email")) {
+				<p class="text-red-500">Provided email is of wrong format.</p>
+			}
 		}
 
 		<label class="my-4 block" hlmLabel>
@@ -74,36 +68,30 @@
 			/>
 		</label>
 
-		@if (
-			registerForm.controls.password.dirty &&
-			registerForm.controls.password.hasError("required")
-		) {
-			<p class="text-red-500">Please provide your password.</p>
-		} @else if (
-			registerForm.controls.email.dirty &&
-			registerForm.controls.email.hasError("pattern")
-		) {
-			<p class="text-red-500">
-				Password has to be min. 8 characters in length have an uppercase and
-				lowercase letter and a digit.
-			</p>
+		@if (registerForm.controls.password.dirty) {
+			@if (registerForm.controls.password.hasError("required")) {
+				<p class="text-red-500">Please provide your password.</p>
+			} @else if (registerForm.controls.email.hasError("pattern")) {
+				<p class="text-red-500">
+					Password has to be min. 8 characters in length have an uppercase and
+					lowercase letter and a digit.
+				</p>
+			}
 		}
-
 		<label class="my-4 block" hlmLabel>
 			Confirm Password
 			<input
 				class="mt-1.5 w-full"
-				type="confirmPassword"
+				type="password"
 				hlmInput
 				formControlName="confirmPassword"
 			/>
 		</label>
 
-		@if (
-			registerForm.controls.confirmPassword.dirty &&
-			registerForm.hasError("passwordMismatch")
-		) {
-			<p class="text-red-500">Passwords are different.</p>
+		@if (registerForm.controls.confirmPassword.dirty) {
+			@if (registerForm.hasError("passwordMismatch")) {
+				<p class="text-red-500">Passwords are different.</p>
+			}
 		}
 	</p>
 

@@ -21,6 +21,7 @@ import {
 	type CountryForm,
 	CountryFormComponent,
 } from "~/app/components/country-form/country-form.component";
+import { AuthService } from "~/app/shared/services/auth.service";
 import { CountryService } from "~/app/shared/services/country.service";
 import { RulerService } from "~/app/shared/services/ruler.service";
 import { Country } from "~/app/shared/types/Country.interface";
@@ -58,6 +59,7 @@ export class DetailsComponent {
 	readonly #countryService = inject(CountryService);
 	readonly #rulerService = inject(RulerService);
 	readonly #route = inject(ActivatedRoute);
+	readonly authService = inject(AuthService);
 	readonly #router = inject(Router);
 
 	country!: DefinedCreateQueryResult<Country>;

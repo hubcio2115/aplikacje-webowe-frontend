@@ -3,13 +3,15 @@ import { Injectable, inject } from "@angular/core";
 
 import { environment } from "~/environments/environment";
 
-import { Country } from "../types/Country.interface";
+import { AuthStore } from "../store/AuthStore";
+import { type Country } from "../types/Country.interface";
 
 @Injectable({
 	providedIn: "root",
 })
 export class CountryService {
 	readonly #httpClient = inject(HttpClient);
+	readonly #authStore = inject(AuthStore);
 
 	getAll() {
 		return this.#httpClient.get<Country[]>(
@@ -27,12 +29,24 @@ export class CountryService {
 		return this.#httpClient.post<Country>(
 			`${environment.apiUrl}/api/countries`,
 			country,
+			{
+				headers: {
+					Authorization: `Bearer ${this.#authStore.access_token()}`,
+				},
+			},
 		);
 	}
 
 	delete(countryId: number) {
+		console.log(this.#authStore.access_token());
+
 		return this.#httpClient.delete<Country>(
 			`${environment.apiUrl}/api/countries/${countryId}`,
+			{
+				headers: {
+					Authorization: `Bearer ${this.#authStore.access_token()}`,
+				},
+			},
 		);
 	}
 
@@ -40,6 +54,11 @@ export class CountryService {
 		return this.#httpClient.put<Country>(
 			`${environment.apiUrl}/api/countries/${countryId}`,
 			country,
+			{
+				headers: {
+					Authorization: `Bearer ${this.#authStore.access_token()}`,
+				},
+			},
 		);
 	}
 }

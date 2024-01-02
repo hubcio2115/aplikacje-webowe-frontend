@@ -12,6 +12,7 @@
 			"@spartan-ng/ui-separator-helm": [
 				"./src/ui/ui-separator-helm/src/index.ts"
 			],
+			"@spartan-ng/ui-avatar-helm": ["./src/ui/ui-avatar-helm/src/index.ts"],
 			"@spartan-ng/ui-button-helm": ["./src/ui/ui-button-helm/src/index.ts"],
 			"@spartan-ng/ui-dialog-helm": ["./src/ui/ui-dialog-helm/src/index.ts"],
 			"@spartan-ng/ui-tooltip-helm": ["./src/ui/ui-tooltip-helm/src/index.ts"],
