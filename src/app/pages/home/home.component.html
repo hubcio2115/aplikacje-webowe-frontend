@@ -28,14 +28,16 @@
 				<hlm-icon name="radixChevronDown" class="ml-2" size="sm" />
 			</button>
 
-			<button
-				hlmBtn
-				variant="default"
-				class="bg-green-400 hover:bg-green-300"
-				routerLink="create"
-			>
-				<hlm-icon name="radixFilePlus" size="sm" class="text-green-800" />
-			</button>
+			@if (authStore.user()) {
+				<button
+					hlmBtn
+					variant="default"
+					class="bg-green-400 hover:bg-green-300"
+					routerLink="create"
+				>
+					<hlm-icon name="radixFilePlus" size="sm" class="text-green-800" />
+				</button>
+			}
 		</div>
 
 		<ng-template #menu>
@@ -150,7 +152,7 @@
 						hlmTooltipTrigger
 						hlmBtn
 						variant="ghost"
-						aria-describedby="Got to details"
+						aria-describedby="Go to details"
 						class="h-6 w-6 p-0.5"
 						align="end"
 						[routerLink]="country.id"
