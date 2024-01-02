@@ -32,6 +32,47 @@ export class AuthService {
 		return this.#authStore;
 	}
 
+	changeUser(newUser: Omit<User, "id">) {
+		this.#authStore.changeUser(newUser);
+
+		localStorage.setItem("user", JSON.stringify(this.#authStore.user()));
+	}
+
+	changeUserDetails(
+		firstName: User["firstName"],
+		lastName: User["lastName"],
+		email: User["email"],
+	) {
+		return this.#httpClient.patch(
+			`${environment.apiUrl}/api/users/details`,
+			{
+				firstName,
+				lastName,
+				email,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${this.#authStore.access_token()}`,
+				},
+			},
+		);
+	}
+
+	changePassword(password: string, confirmPassword: string) {
+		return this.#httpClient.patch(
+			`${environment.apiUrl}/api/users/password`,
+			{
+				newPassword: password,
+				confirmationPassword: confirmPassword,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${this.#authStore.access_token()}`,
+				},
+			},
+		);
+	}
+
 	login(email: string, password: string) {
 		return this.#httpClient
 			.post<{
@@ -90,6 +131,8 @@ export class AuthService {
 				localStorage.removeItem("user");
 				localStorage.removeItem("access_token");
 				localStorage.removeItem("refresh_token");
+
+				void this.#router.navigate(["/"]);
 			});
 	}
 }
