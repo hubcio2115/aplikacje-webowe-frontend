@@ -24,31 +24,32 @@ export const routes: Routes = [
 		canActivate: [isNotAuthedGuard],
 	},
 	{
-		path: "countries",
+		path: "",
 		component: NavbarComponent,
 		children: [
 			{
-				path: "",
+				path: "countries",
 				component: HomeComponent,
 			},
 			{
-				path: "create",
+				path: "countries/create",
 				component: CreateCountryComponent,
 				canActivate: [isAuthedGuard],
 			},
 			{
-				path: ":id",
+				path: "countries/:id",
 				resolve: {
 					country: countryResolver,
 					ruler: rulerResolver,
 				},
 				component: DetailsComponent,
 			},
+			{
+				path: "user-details",
+				component: UserDetailsComponent,
+				canActivate: [isAuthedGuard],
+			},
 		],
-	},
-	{
-		path: "user-details",
-		component: UserDetailsComponent,
 	},
 	{
 		path: "**",
