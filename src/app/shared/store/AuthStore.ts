@@ -35,5 +35,11 @@ export const AuthStore = signalStore(
 				access_token: null,
 			});
 		},
+
+		changeUser(newUser: Omit<User, "id">) {
+			patchState(store, {
+				user: { id: store.user()!.id, ...newUser },
+			});
+		},
 	})),
 );
