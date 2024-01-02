@@ -5,9 +5,9 @@
 
 - Funkcjonalność (wszelka obsługa po stronie FE)
 	- Użytkownicy
-		- [ ] Obsługa logowania
-		- [ ] Zabezpieczone widoki w zależności od wymaganej autoryzacji (w przypadku braku wymaganej autoryzacji przekierowanie na widok logowania)
-		- [ ] Wyświetlanie w navbarze informacji o aktualnie zalogowanym użytkowniku (np. login lub imię i nazwisko)
+		- [x] Obsługa logowania
+		- [x] Zabezpieczone widoki w zależności od wymaganej autoryzacji (w przypadku braku wymaganej autoryzacji przekierowanie na widok logowania)
+		- [x] Wyświetlanie w navbarze informacji o aktualnie zalogowanym użytkowniku (np. login lub imię i nazwisko)
 		- [ ] Dedykowany widok do zmiany danych aktualnie zalogowanego użytkownika
   - Poruszanie się po aplikacji **\[DST\]**
     - [x] Powinna być możliwość przeglądania danych w strukturze master-detail
@@ -33,7 +33,7 @@
 
 - Wymagania niefunkcjonalne
 	- [x] Aplikacja powinna być podzielona na moduły w zależności od funkcjonalności (m.in. core i shared) **\[DST\]**
-  - [ ] Zarządzanie stanem NgRx **\[BDB\]**
+  - [x] Zarządzanie stanem NgRx **\[BDB\]**
   - Zarówno FE, jak i BE nie powinny zwracać żadnych błędów.
   - Oceniana będzie również własna inicjatywa, styl i czystość kodu
   - Obiekty typujemy przez interfejsy, nie klasy
