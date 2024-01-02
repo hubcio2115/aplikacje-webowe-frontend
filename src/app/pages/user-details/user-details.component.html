@@ -1,1 +1,150 @@
-<p>user-details works!</p>
+<div class="pb-4 sm:pb-0">
+	<button hlmBtn variant="link" class="flex items-center p-0" routerLink="/">
+		<hlm-icon name="radixChevronLeft" size="sm" />
+
+		Go back
+	</button>
+
+	<h1 class="mb-4 text-2xl font-bold">User Details</h1>
+
+	<div hlmCard class="sm:min-w-[600px]">
+		<div hlmCardContent class="p-6">
+			<form
+				[formGroup]="detailsForm"
+				class="grid grid-cols-2 gap-2"
+				(ngSubmit)="submitChangeDetails(detailsForm.value)"
+			>
+				<div class="col-span-2 mb-3 sm:col-span-1">
+					<label hlmLabel>
+						First Name
+						<input
+							hlmInput
+							class="mt-3 w-full disabled:opacity-100"
+							formControlName="firstName"
+						/>
+					</label>
+
+					@if (
+						detailsForm.controls.firstName.dirty ||
+						detailsForm.controls.firstName.touched
+					) {
+						@if (detailsForm.controls.firstName.hasError("required")) {
+							<p class="text-red-500">Please provide your first name.</p>
+						}
+					}
+				</div>
+
+				<div class="col-span-2 mb-3 md:col-span-1">
+					<label hlmLabel>
+						Last Name
+						<input
+							hlmInput
+							class="mt-3 w-full disabled:opacity-100"
+							formControlName="lastName"
+						/>
+					</label>
+
+					@if (
+						detailsForm.controls.lastName.dirty ||
+						detailsForm.controls.lastName.touched
+					) {
+						@if (detailsForm.controls.lastName.hasError("required")) {
+							<p class="text-red-500">Please provide your last name.</p>
+						}
+					}
+				</div>
+
+				<div class="col-span-2 mb-3">
+					<label hlmLabel>
+						Email
+						<input
+							hlmInput
+							class="mt-3 w-full disabled:opacity-100"
+							formControlName="email"
+						/>
+					</label>
+
+					@if (
+						detailsForm.controls.email.dirty ||
+						detailsForm.controls.email.touched
+					) {
+						@if (detailsForm.controls.email.hasError("required")) {
+							<p class="text-red-500">Please provide your email.</p>
+						} @else if (detailsForm.controls.email.hasError("email")) {
+							<p class="text-red-500">Provided email is of wrong format.</p>
+						}
+					}
+				</div>
+
+				<div class="mt-3">
+					<button type="submit" hlmBtn>Save</button>
+				</div>
+			</form>
+
+			<brn-separator hlmSeparator />
+
+			<form
+				[formGroup]="changePasswordForm"
+				class="mt-3 grid grid-cols-2 gap-4"
+				(ngSubmit)="submitChangePassword(changePasswordForm.value)"
+			>
+				<h2 class="col-span-2 text-xl font-bold">Change Password</h2>
+
+				<div class="col-span-2 mb-3 sm:col-span-1">
+					<label hlmLabel class="my-3">
+						Password
+						<input
+							hlmInput
+							class="mt-3 w-full disabled:opacity-100"
+							type="password"
+							autocomplete="off"
+							formControlName="password"
+						/>
+					</label>
+
+					@if (
+						changePasswordForm.controls.password.dirty ||
+						changePasswordForm.controls.password.touched
+					) {
+						@if (changePasswordForm.controls.password.hasError("required")) {
+							<p class="text-red-500">Please provide your password.</p>
+						} @else if (
+							changePasswordForm.controls.password.hasError("pattern")
+						) {
+							<p class="text-red-500">
+								Password has to be min. 8 characters in length have an uppercase
+								and lowercase letter and a digit.
+							</p>
+						}
+					}
+				</div>
+
+				<div class="col-span-2 mb-3 sm:col-span-1">
+					<label hlmLabel>
+						Confirm password
+						<input
+							hlmInput
+							class="mt-3 w-full disabled:opacity-100"
+							type="password"
+							autocomplete="off"
+							formControlName="confirmPassword"
+						/>
+					</label>
+
+					@if (
+						changePasswordForm.controls.confirmPassword.dirty ||
+						changePasswordForm.controls.confirmPassword.touched
+					) {
+						@if (detailsForm.hasError("passwordMismatch")) {
+							<p class="text-red-500">Passwords are different.</p>
+						}
+					}
+				</div>
+
+				<div>
+					<button type="submit" hlmBtn>Change Password</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
