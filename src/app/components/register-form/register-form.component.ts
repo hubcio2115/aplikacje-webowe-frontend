@@ -6,13 +6,11 @@ import {
 	ReactiveFormsModule,
 	Validators,
 } from "@angular/forms";
-import { Router } from "@angular/router";
 import { HlmButtonModule } from "@spartan-ng/ui-button-helm";
 import { HlmInputModule } from "@spartan-ng/ui-input-helm";
 
 import { passwordMatchValidator } from "~/app/shared/directives/samePassword.directive";
 import { AuthService } from "~/app/shared/services/auth.service";
-import { AuthStore } from "~/app/shared/store/AuthStore";
 import { HlmCardModule } from "~/ui/ui-card-helm/src";
 import { HlmLabelModule } from "~/ui/ui-label-helm/src";
 
@@ -32,8 +30,6 @@ import { HlmLabelModule } from "~/ui/ui-label-helm/src";
 })
 export class RegisterFormComponent {
 	readonly #authService = inject(AuthService);
-	readonly #authStore = inject(AuthStore);
-	readonly #router = inject(Router);
 
 	registerForm = new FormGroup(
 		{
