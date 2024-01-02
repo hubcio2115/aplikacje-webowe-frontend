@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, inject } from "@angular/core";
 import {
 	FormControl,
 	FormGroup,
@@ -11,6 +11,7 @@ import { provideIcons } from "@ng-icons/core";
 import { BrnCheckboxComponent } from "@spartan-ng/ui-checkbox-brain";
 import { BrnSeparatorComponent } from "@spartan-ng/ui-separator-brain";
 
+import { AuthService } from "~/app/shared/services/auth.service";
 import { Country } from "~/app/shared/types/Country.interface";
 import { Ruler } from "~/app/shared/types/Ruler.interface";
 import { HlmButtonModule } from "~/ui/ui-button-helm/src";
@@ -70,6 +71,8 @@ export class CountryFormComponent implements OnInit {
 	@Input({ required: false }) initialRulerData: Ruler | null = null;
 	@Input({ required: true }) onSubmit!: (values: CountryForm["value"]) => void;
 	@Input({ required: true }) pending!: boolean;
+
+	readonly authService = inject(AuthService);
 
 	countryForm!: CountryForm;
 

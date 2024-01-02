@@ -105,6 +105,14 @@
 				/>
 			</label>
 
+			@if (
+				countryForm.controls.ruler.dirty && countryForm.controls.ruler.touched
+			) {
+				@if (countryForm.controls.ruler.controls.name.hasError("required")) {
+					<p class="text-red-500">Please provide a formation year.</p>
+				}
+			}
+
 			<label class="my-6 block" hlmLabel
 				>Last Name
 				<input
@@ -115,6 +123,14 @@
 					formControlName="surname"
 				/>
 			</label>
+
+			@if (
+				countryForm.controls.ruler.dirty && countryForm.controls.ruler.touched
+			) {
+				@if (countryForm.controls.ruler.controls.surname.hasError("required")) {
+					<p class="text-red-500">Please provide a formation year.</p>
+				}
+			}
 
 			<label class="my-6 block" hlmLabel
 				>Office start date
@@ -128,34 +144,36 @@
 			</label>
 		</div>
 
-		<div class="flex justify-between">
-			@if (isEditForm) {
+		@if (authService.getAuthStore().user()) {
+			<div class="flex justify-between">
+				@if (isEditForm) {
+					<button
+						hlmBtn
+						(click)="toggleEditMode()"
+						variant="outline"
+						type="button"
+					>
+						Edit
+					</button>
+				}
+
 				<button
 					hlmBtn
-					(click)="toggleEditMode()"
-					variant="outline"
-					type="button"
+					[disabled]="countryForm.disabled || !countryForm.valid || pending"
+					class="flex justify-center gap-1"
+					type="submit"
 				>
-					Edit
+					Save
+
+					@if (pending) {
+						<hlm-icon
+							name="bootstrapArrowClockwise"
+							size="17px"
+							class="animate-spin"
+						/>
+					}
 				</button>
-			}
-
-			<button
-				hlmBtn
-				[disabled]="countryForm.disabled || !countryForm.valid || pending"
-				class="flex justify-center gap-1"
-				type="submit"
-			>
-				Save
-
-				@if (pending) {
-					<hlm-icon
-						name="bootstrapArrowClockwise"
-						size="17px"
-						class="animate-spin"
-					/>
-				}
-			</button>
-		</div>
+			</div>
+		}
 	</div>
 </form>
