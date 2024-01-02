@@ -88,7 +88,8 @@ import { HlmTooltipModule } from "~/ui/ui-tooltip-helm/src";
 	templateUrl: "./home.component.html",
 })
 export class HomeComponent {
-	@HostBinding("class") class = "flex flex-1 justify-center items-center";
+	@HostBinding("class") class =
+		"flex flex-1 justify-center items-center mt-4 md:mt-0";
 
 	readonly #countryService = inject(CountryService);
 
