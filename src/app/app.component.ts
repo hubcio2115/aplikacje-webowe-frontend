@@ -13,5 +13,5 @@ import { AngularQueryDevtools } from "@tanstack/angular-query-devtools-experimen
 	`,
 })
 export class AppComponent {
-	@HostBinding("class") class = "min-h-screen flex";
+	@HostBinding("class") class = "flex";
 }
