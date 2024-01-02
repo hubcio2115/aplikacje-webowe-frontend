@@ -8,43 +8,48 @@
 	<div class="mb-6 flex justify-between">
 		<h1 class="text-2xl font-bold">Country Details</h1>
 
-		<hlm-dialog>
-			<button
-				hlmBtn
-				variant="outline"
-				class="border-red-500 text-red-500 hover:bg-red-100 hover:text-red-600"
-				size="sm"
-				brnDialogTrigger
-			>
-				<hlm-icon name="radixTrash" />
-			</button>
+		@if (authService.getAuthStore().user()) {
+			<hlm-dialog>
+				<button
+					hlmBtn
+					variant="outline"
+					class="border-red-500 text-red-500 hover:bg-red-100 hover:text-red-600"
+					size="sm"
+					brnDialogTrigger
+				>
+					<hlm-icon name="radixTrash" />
+				</button>
 
-			<hlm-dialog-content class="sm:max-w-[425px]" *brnDialogContent="let ctx">
-				<hlm-dialog-header>
-					<h3 hlmDialogTitle>Are you sure?</h3>
-					<p hlmDialogDescription class="font-bold">
-						Ruler will also be deleted!
-					</p>
-				</hlm-dialog-header>
+				<hlm-dialog-content
+					class="sm:max-w-[425px]"
+					*brnDialogContent="let ctx"
+				>
+					<hlm-dialog-header>
+						<h3 hlmDialogTitle>Are you sure?</h3>
+						<p hlmDialogDescription class="font-bold">
+							Ruler will also be deleted!
+						</p>
+					</hlm-dialog-header>
 
-				<div>Do you want to delete this?</div>
+					<div>Do you want to delete this?</div>
 
-				<hlm-dialog-footer>
-					<button
-						hlmBtn
-						variant="destructive"
-						(click)="deleteCountryMutation().mutate(null)"
-						[disabled]="deleteCountryMutation().isPending"
-					>
-						@if (deleteCountryMutation().isPending) {
-							<hlm-icon name="bootstrapArrowClockwise" class="animate-spin" />
-						} @else {
-							<hlm-icon name="radixTrash" />
-						}
-					</button>
-				</hlm-dialog-footer>
-			</hlm-dialog-content>
-		</hlm-dialog>
+					<hlm-dialog-footer>
+						<button
+							hlmBtn
+							variant="destructive"
+							(click)="deleteCountryMutation().mutate(null)"
+							[disabled]="deleteCountryMutation().isPending"
+						>
+							@if (deleteCountryMutation().isPending) {
+								<hlm-icon name="bootstrapArrowClockwise" class="animate-spin" />
+							} @else {
+								<hlm-icon name="radixTrash" />
+							}
+						</button>
+					</hlm-dialog-footer>
+				</hlm-dialog-content>
+			</hlm-dialog>
+		}
 	</div>
 
 	<app-country-form
