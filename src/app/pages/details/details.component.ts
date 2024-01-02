@@ -54,7 +54,7 @@ import { HlmIconModule } from "~/ui/ui-icon-helm/src";
 })
 export class DetailsComponent {
 	@HostBinding("class") class =
-		"flex flex-col w-full justify-center items-center";
+		"flex flex-col w-full justify-center items-center flex-1";
 
 	readonly #countryService = inject(CountryService);
 	readonly #rulerService = inject(RulerService);
