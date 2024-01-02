@@ -8,7 +8,7 @@
 		- [x] Obsługa logowania
 		- [x] Zabezpieczone widoki w zależności od wymaganej autoryzacji (w przypadku braku wymaganej autoryzacji przekierowanie na widok logowania)
 		- [x] Wyświetlanie w navbarze informacji o aktualnie zalogowanym użytkowniku (np. login lub imię i nazwisko)
-		- [ ] Dedykowany widok do zmiany danych aktualnie zalogowanego użytkownika
+		- [x] Dedykowany widok do zmiany danych aktualnie zalogowanego użytkownika
   - Poruszanie się po aplikacji **\[DST\]**
     - [x] Powinna być możliwość przeglądania danych w strukturze master-detail
     - [x] Widok szczegółowy powinien umożliwić edycje i usunięcie
